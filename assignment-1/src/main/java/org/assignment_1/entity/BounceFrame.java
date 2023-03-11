@@ -6,12 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BounceFrame extends JFrame {
-    private BallCanvas canvas;
     public static final int WIDTH = 450;
     public static final int HEIGHT = 350;
+    private final BallCanvas canvas;
+
     public BounceFrame() {
         this.setSize(WIDTH, HEIGHT);
-        this.setTitle("Bounce programm");
+        this.setTitle("Bounce program");
         this.canvas = new BallCanvas();
         System.out.println("In Frame Thread name = "
                 + Thread.currentThread().getName());
@@ -25,7 +26,12 @@ public class BounceFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < 5; ++i) {
+                    runBall();
+                }
+            }
 
+            void runBall() {
                 Ball b = new Ball(canvas);
                 canvas.add(b);
 
@@ -34,6 +40,7 @@ public class BounceFrame extends JFrame {
                 System.out.println("Thread name = " +
                         thread.getName());
             }
+
         });
         buttonStop.addActionListener(new ActionListener() {
             @Override
