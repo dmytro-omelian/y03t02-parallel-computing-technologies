@@ -2,6 +2,7 @@ package org.assignment_1.entity;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.List;
 import java.util.Random;
 
 class Ball extends BallForm {
@@ -50,4 +51,19 @@ class Ball extends BallForm {
         }
         this.canvas.repaint();
     }
+
+    public boolean isGotIntoWhole(List<Whole> wholes) {
+        for (Whole whole : wholes) {
+            if (isClose(whole)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isClose(Whole whole) {
+        int manhDistance = Math.abs(whole.x - x) + Math.abs(whole.y - y);
+        return manhDistance <= 10;
+    }
+
 }
