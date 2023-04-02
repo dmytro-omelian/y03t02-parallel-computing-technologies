@@ -9,11 +9,13 @@ public class BounceFrame extends JFrame {
     public static final int WIDTH = 450;
     public static final int HEIGHT = 350;
     private final BallCanvas canvas;
+    protected final BallsStorage storage;
 
     public BounceFrame() {
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Bounce program");
-        this.canvas = new BallCanvas();
+        this.storage = new BallsStorage();
+        this.canvas = new BallCanvas(storage);
         System.out.println("In Frame Thread name = "
                 + Thread.currentThread().getName());
         Container content = this.getContentPane();
@@ -22,7 +24,7 @@ public class BounceFrame extends JFrame {
         buttonPanel.setBackground(Color.lightGray);
 
         Whole whole = new Whole(canvas);
-        canvas.add(whole);
+        this.storage.add(whole);
 
         JButton buttonStart = new JButton("Start");
         JButton buttonStop = new JButton("Stop");
@@ -35,10 +37,11 @@ public class BounceFrame extends JFrame {
 
             void runBall() {
                 Ball b = new Ball(canvas);
-                canvas.add(b);
-
                 BallThread thread = new BallThread(b);
+
                 thread.start();
+                storage.add(b, thread);
+
                 System.out.println("Thread name = " +
                         thread.getName());
             }
