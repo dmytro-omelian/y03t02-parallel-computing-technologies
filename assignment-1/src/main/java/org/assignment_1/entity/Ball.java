@@ -52,13 +52,13 @@ class Ball extends BallForm {
         this.canvas.repaint();
     }
 
-    public boolean isGotIntoWhole(List<Whole> wholes) {
+    public Whole isGotIntoWhole(List<Whole> wholes) {
         for (Whole whole : wholes) {
             if (isClose(whole)) {
-                return true;
+                return whole;
             }
         }
-        return false;
+        return null;
     }
 
     private boolean isClose(Whole whole) {
