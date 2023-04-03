@@ -26,8 +26,24 @@ public class BounceFrame extends JFrame {
         Whole whole = new Whole(canvas);
         this.storage.add(whole);
 
+        startButton(buttonPanel);
+        stopButton(buttonPanel);
+
+        JButton buttonRed = new JButton("Red ball start");
+        buttonRed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        buttonPanel.add(buttonRed);
+
+
+        content.add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void startButton(JPanel buttonPanel) {
         JButton buttonStart = new JButton("Start");
-        JButton buttonStop = new JButton("Stop");
         buttonStart.addActionListener(new ActionListener() {
 
             @Override
@@ -47,10 +63,12 @@ public class BounceFrame extends JFrame {
             }
 
         });
-        buttonStop.addActionListener(e -> System.exit(0));
         buttonPanel.add(buttonStart);
-        buttonPanel.add(buttonStop);
+    }
 
-        content.add(buttonPanel, BorderLayout.SOUTH);
+    private void stopButton(JPanel buttonPanel) {
+        JButton buttonStop = new JButton("Stop");
+        buttonStop.addActionListener(e -> System.exit(0));
+        buttonPanel.add(buttonStop);
     }
 }

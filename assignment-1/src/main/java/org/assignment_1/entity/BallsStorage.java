@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class BallsStorage {
 
-    private final Map<GreyBall, BallThread> balls;
+    private final Map<MovableBall, BallThread> balls;
     private final List<Whole> wholes;
 
     public BallsStorage() {
@@ -15,7 +15,7 @@ public class BallsStorage {
         this.wholes = new ArrayList<>();
     }
 
-    public List<GreyBall> getBalls() {
+    public List<? extends MovableBall> getBalls() {
         return this.balls.keySet().stream().toList();
     }
 
@@ -31,7 +31,7 @@ public class BallsStorage {
         this.wholes.add(b);
     }
 
-    public void remove(GreyBall greyBall) {
+    public void remove(MovableBall greyBall) {
         Thread thread = this.balls.getOrDefault(greyBall, null);
         if (thread == null) {
             throw new RuntimeException("Thread is null...");

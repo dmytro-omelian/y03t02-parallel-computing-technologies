@@ -3,7 +3,7 @@ package org.assignment_1.entity;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class RedBall extends Ball {
+public class RedBall extends MovableBall {
     public RedBall(Component c) {
         super(c);
     }
