@@ -23,7 +23,7 @@ public class BallsStorage {
         return wholes;
     }
 
-    public void add(GreyBall greyBall, BallThread thread) {
+    public void add(MovableBall greyBall, BallThread thread) {
         this.balls.put(greyBall, thread);
     }
 

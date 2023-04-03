@@ -31,10 +31,23 @@ public class BounceFrame extends JFrame {
 
         JButton buttonRed = new JButton("Red ball start");
         buttonRed.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                runBall();
             }
+
+            void runBall() {
+                RedBall r = new RedBall(canvas);
+                BallThread thread = new BallThread(r);
+
+                thread.start();
+                storage.add(r, thread);
+
+                System.out.println("Thread name = " +
+                        thread.getName());
+            }
+
         });
         buttonPanel.add(buttonRed);
 
