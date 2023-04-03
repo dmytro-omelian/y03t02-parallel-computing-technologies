@@ -1,10 +1,10 @@
 package org.assignment_1.entity;
 
 public class BallThread extends Thread {
-    private final Ball b;
+    private final GreyBall b;
 
-    public BallThread(Ball ball) {
-        b = ball;
+    public BallThread(GreyBall greyBall) {
+        b = greyBall;
     }
 
     @Override

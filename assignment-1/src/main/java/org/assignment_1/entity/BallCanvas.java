@@ -15,7 +15,7 @@ public class BallCanvas extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        for (Ball b : this.storage.getBalls()) {
+        for (GreyBall b : this.storage.getBalls()) {
             Whole w = b.isGotIntoWhole(this.storage.getWholes());
             if (w == null) {
                 b.draw(g2);

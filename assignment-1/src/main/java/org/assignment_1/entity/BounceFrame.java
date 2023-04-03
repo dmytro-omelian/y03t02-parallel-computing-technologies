@@ -36,7 +36,7 @@ public class BounceFrame extends JFrame {
             }
 
             void runBall() {
-                Ball b = new Ball(canvas);
+                GreyBall b = new GreyBall(canvas);
                 BallThread thread = new BallThread(b);
 
                 thread.start();
