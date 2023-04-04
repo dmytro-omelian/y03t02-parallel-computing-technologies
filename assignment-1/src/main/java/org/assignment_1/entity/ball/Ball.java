@@ -1,4 +1,4 @@
-package org.assignment_1.entity;
+package org.assignment_1.entity.ball;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;

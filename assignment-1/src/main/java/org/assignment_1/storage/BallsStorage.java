@@ -1,4 +1,8 @@
-package org.assignment_1.entity;
+package org.assignment_1.storage;
+
+import org.assignment_1.entity.ball.MovableBall;
+import org.assignment_1.entity.ball.Whole;
+import org.assignment_1.entity.thread.BallThread;
 
 import java.util.ArrayList;
 import java.util.HashMap;

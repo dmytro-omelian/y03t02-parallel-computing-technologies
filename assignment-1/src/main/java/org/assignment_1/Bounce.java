@@ -1,6 +1,6 @@
 package org.assignment_1;
 
-import org.assignment_1.entity.BounceFrame;
+import org.assignment_1.entity.frame.BounceFrame;
 
 import javax.swing.*;
 
