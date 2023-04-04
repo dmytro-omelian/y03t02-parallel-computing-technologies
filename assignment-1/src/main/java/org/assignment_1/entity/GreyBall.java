@@ -9,12 +9,19 @@ class GreyBall extends MovableBall {
         super(c);
 
         if (Math.random() < 0.5) {
-            x = new Random().nextInt(this.canvas.getWidth());
-            y = 0;
+            this.x = new Random().nextInt(this.canvas.getWidth());
+            this.y = 0;
         } else {
-            x = 0;
-            y = new Random().nextInt(this.canvas.getHeight());
+            this.x = 0;
+            this.y = new Random().nextInt(this.canvas.getHeight());
         }
+    }
+
+    public GreyBall(Component c, int x, int y) {
+        super(c);
+
+        this.x = x;
+        this.y = y;
     }
 
 }

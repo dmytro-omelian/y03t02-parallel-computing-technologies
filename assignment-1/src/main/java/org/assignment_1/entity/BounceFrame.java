@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class BounceFrame extends JFrame {
     public static final int WIDTH = 450;
@@ -29,8 +30,37 @@ public class BounceFrame extends JFrame {
         startButton(buttonPanel);
         stopButton(buttonPanel);
         redBallButton(buttonPanel);
+        experimentLotsBallsButton(buttonPanel);
 
         content.add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void experimentLotsBallsButton(JPanel buttonPanel) {
+        JButton buttonRed = new JButton("1000 balls exp.");
+        buttonRed.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int x = 0;
+                int y = new Random().nextInt(canvas.getWidth());
+                for (int i = 0; i < 1000; ++ i) {
+                    runBall(x, y);
+                };
+            }
+
+            void runBall(int x, int y) {
+                GreyBall r = new GreyBall(canvas, x, y);
+                BallThread thread = new BallThread(r);
+                thread.setPriority(1);
+                storage.add(r, thread);
+                thread.start();
+
+                System.out.println("Thread name = " +
+                        thread.getName());
+            }
+
+        });
+        buttonPanel.add(buttonRed);
     }
 
     private void redBallButton(JPanel buttonPanel) {
@@ -45,7 +75,7 @@ public class BounceFrame extends JFrame {
             void runBall() {
                 RedBall r = new RedBall(canvas);
                 BallThread thread = new BallThread(r);
-                thread.setPriority(2);
+                thread.setPriority(10);
                 thread.start();
                 storage.add(r, thread);
 
