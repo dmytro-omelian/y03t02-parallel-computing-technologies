@@ -1,9 +1,9 @@
-package org.assignment_1.entity.ball;
+package org.assignment_1_1.entity.ball;
 
 import java.awt.*;
 import java.util.Random;
 
-class GreyBall extends MovableBall {
+public class GreyBall extends MovableBall {
 
     public GreyBall(Component c) {
         super(c);

@@ -1,4 +1,4 @@
-package org.assignment_1.entity.ball;
+package org.assignment_1_1.entity.ball;
 
 import java.awt.*;
 import java.util.List;

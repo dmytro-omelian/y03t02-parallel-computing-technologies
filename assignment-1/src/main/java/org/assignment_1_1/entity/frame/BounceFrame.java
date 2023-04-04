@@ -1,11 +1,11 @@
-package org.assignment_1.entity.frame;
+package org.assignment_1_1.entity.frame;
 
-import org.assignment_1.canvas.BallCanvas;
-import org.assignment_1.entity.GreyBall;
-import org.assignment_1.entity.ball.RedBall;
-import org.assignment_1.entity.ball.Whole;
-import org.assignment_1.entity.thread.BallThread;
-import org.assignment_1.storage.BallsStorage;
+import org.assignment_1_1.canvas.BallCanvas;
+import org.assignment_1_1.entity.ball.GreyBall;
+import org.assignment_1_1.entity.ball.RedBall;
+import org.assignment_1_1.entity.ball.Whole;
+import org.assignment_1_1.entity.thread.BallThread;
+import org.assignment_1_1.storage.BallsStorage;
 
 import javax.swing.*;
 import java.awt.*;

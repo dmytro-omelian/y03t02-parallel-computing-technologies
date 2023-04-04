@@ -1,6 +1,6 @@
-package org.assignment_1.entity.thread;
+package org.assignment_1_1.entity.thread;
 
-import org.assignment_1.entity.ball.MovableBall;
+import org.assignment_1_1.entity.ball.MovableBall;
 
 public class BallThread extends Thread {
     private final MovableBall ball;

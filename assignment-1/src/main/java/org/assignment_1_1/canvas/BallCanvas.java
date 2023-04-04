@@ -1,8 +1,8 @@
-package org.assignment_1.canvas;
+package org.assignment_1_1.canvas;
 
-import org.assignment_1.entity.ball.MovableBall;
-import org.assignment_1.entity.ball.Whole;
-import org.assignment_1.storage.BallsStorage;
+import org.assignment_1_1.entity.ball.MovableBall;
+import org.assignment_1_1.entity.ball.Whole;
+import org.assignment_1_1.storage.BallsStorage;
 
 import javax.swing.*;
 import java.awt.*;
