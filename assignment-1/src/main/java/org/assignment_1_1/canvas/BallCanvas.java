@@ -1,6 +1,6 @@
 package org.assignment_1_1.canvas;
 
-import org.assignment_1_1.entity.ball.MovableBall;
+import org.assignment_1_1.entity.ball.Ball;
 import org.assignment_1_1.entity.ball.Whole;
 import org.assignment_1_1.storage.BallsStorage;
 
@@ -19,7 +19,7 @@ public class BallCanvas extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        for (MovableBall b : this.storage.getBalls()) {
+        for (Ball b : this.storage.getBalls()) {
             Whole w = b.isGotIntoWhole(this.storage.getWholes());
             if (w == null) {
                 b.draw(g2);

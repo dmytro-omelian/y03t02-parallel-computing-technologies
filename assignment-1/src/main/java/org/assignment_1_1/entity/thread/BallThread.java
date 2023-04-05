@@ -1,16 +1,16 @@
 package org.assignment_1_1.entity.thread;
 
-import org.assignment_1_1.entity.ball.MovableBall;
+import org.assignment_1_1.entity.ball.Ball;
 
 public class BallThread extends Thread {
-    private final MovableBall ball;
+    private final Ball ball;
     private BallThread parentThread;
 
-    public BallThread(MovableBall ball) {
+    public BallThread(Ball ball) {
         this.ball = ball;
     }
 
-    public BallThread(MovableBall ball, BallThread parentThread) {
+    public BallThread(Ball ball, BallThread parentThread) {
         this.ball = ball;
         this.parentThread = parentThread;
     }

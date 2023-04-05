@@ -1,6 +1,6 @@
 package org.assignment_1_1.storage;
 
-import org.assignment_1_1.entity.ball.MovableBall;
+import org.assignment_1_1.entity.ball.Ball;
 import org.assignment_1_1.entity.ball.Whole;
 import org.assignment_1_1.entity.thread.BallThread;
 
@@ -11,16 +11,16 @@ import java.util.Map;
 
 public class BallsStorage {
 
-    private final Map<MovableBall, BallThread> balls;
+    private final Map<Ball, BallThread> balls;
     private final List<Whole> wholes;
-    private MovableBall lastBall;
+    private Ball lastBall;
 
     public BallsStorage() {
         this.balls = new HashMap<>();
         this.wholes = new ArrayList<>();
     }
 
-    public List<? extends MovableBall> getBalls() {
+    public List<? extends Ball> getBalls() {
         return this.balls.keySet().stream().toList();
     }
 
@@ -28,7 +28,7 @@ public class BallsStorage {
         return wholes;
     }
 
-    public void add(MovableBall greyBall, BallThread thread) {
+    public void add(Ball greyBall, BallThread thread) {
         this.balls.put(greyBall, thread);
         this.lastBall = greyBall;
     }
@@ -37,20 +37,20 @@ public class BallsStorage {
         this.wholes.add(b);
     }
 
-    public void remove(MovableBall greyBall) {
+    public void remove(Ball greyBall) {
         Thread thread = this.balls.getOrDefault(greyBall, null);
         if (thread == null) {
             throw new RuntimeException("Thread is null...");
         }
-        thread.stop();
+        thread.interrupt();
         this.balls.remove(greyBall);
     }
 
-    public MovableBall getLastBall() {
+    public Ball getLastBall() {
         return this.lastBall;
     }
 
-    public BallThread getThreadByBall(MovableBall lastBall) {
+    public BallThread getThreadByBall(Ball lastBall) {
         return this.balls.getOrDefault(lastBall, null);
     }
 }

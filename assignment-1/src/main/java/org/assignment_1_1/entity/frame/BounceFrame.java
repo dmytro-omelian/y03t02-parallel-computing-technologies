@@ -1,9 +1,7 @@
 package org.assignment_1_1.entity.frame;
 
 import org.assignment_1_1.canvas.BallCanvas;
-import org.assignment_1_1.entity.ball.GreyBall;
-import org.assignment_1_1.entity.ball.MovableBall;
-import org.assignment_1_1.entity.ball.RedBall;
+import org.assignment_1_1.entity.ball.Ball;
 import org.assignment_1_1.entity.ball.Whole;
 import org.assignment_1_1.entity.thread.BallThread;
 import org.assignment_1_1.storage.BallsStorage;
@@ -32,7 +30,7 @@ public class BounceFrame extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.lightGray);
 
-        Whole whole = new Whole(canvas);
+        Whole whole = new Whole(canvas, Color.BLUE);
         this.storage.add(whole);
 
         startButton(buttonPanel);
@@ -45,7 +43,7 @@ public class BounceFrame extends JFrame {
     }
 
     private void joinBallButton(JPanel buttonPanel) {
-        JButton buttonStart = new JButton("Join Ball");
+        JButton buttonStart = new JButton("Join BallShape");
         buttonStart.addActionListener(new ActionListener() {
 
             @Override
@@ -58,8 +56,8 @@ public class BounceFrame extends JFrame {
             }
 
             void runBall() throws InterruptedException {
-                GreyBall b = new GreyBall(canvas);
-                MovableBall lastBall = storage.getLastBall();
+                Ball b = new Ball(canvas, Color.DARK_GRAY);
+                Ball lastBall = storage.getLastBall();
                 BallThread thread;
                 if (lastBall != null) {
                     BallThread lastThread = storage.getThreadByBall(lastBall);
@@ -92,7 +90,7 @@ public class BounceFrame extends JFrame {
             }
 
             void runBall(int x, int y) {
-                GreyBall r = new GreyBall(canvas, x, y);
+                Ball r = new Ball(canvas, x, y, Color.DARK_GRAY);
                 BallThread thread = new BallThread(r);
                 thread.setPriority(1);
                 storage.add(r, thread);
@@ -115,7 +113,7 @@ public class BounceFrame extends JFrame {
             }
 
             void runBall() {
-                RedBall r = new RedBall(canvas);
+                Ball r = new Ball(canvas, Color.RED);
                 BallThread thread = new BallThread(r);
                 thread.setPriority(10);
                 thread.start();
@@ -139,7 +137,7 @@ public class BounceFrame extends JFrame {
             }
 
             void runBall() {
-                GreyBall b = new GreyBall(canvas);
+                Ball b = new Ball(canvas, Color.DARK_GRAY);
                 BallThread thread = new BallThread(b);
                 thread.setPriority(1);
                 thread.start();
