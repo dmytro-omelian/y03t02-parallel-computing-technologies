@@ -13,6 +13,7 @@ public class BallsStorage {
 
     private final Map<MovableBall, BallThread> balls;
     private final List<Whole> wholes;
+    private MovableBall lastBall;
 
     public BallsStorage() {
         this.balls = new HashMap<>();
@@ -29,6 +30,7 @@ public class BallsStorage {
 
     public void add(MovableBall greyBall, BallThread thread) {
         this.balls.put(greyBall, thread);
+        this.lastBall = greyBall;
     }
 
     public void add(Whole b) {
@@ -44,4 +46,11 @@ public class BallsStorage {
         this.balls.remove(greyBall);
     }
 
+    public MovableBall getLastBall() {
+        return this.lastBall;
+    }
+
+    public BallThread getThreadByBall(MovableBall lastBall) {
+        return this.balls.getOrDefault(lastBall, null);
+    }
 }

@@ -2,6 +2,7 @@ package org.assignment_1_1.entity.frame;
 
 import org.assignment_1_1.canvas.BallCanvas;
 import org.assignment_1_1.entity.ball.GreyBall;
+import org.assignment_1_1.entity.ball.MovableBall;
 import org.assignment_1_1.entity.ball.RedBall;
 import org.assignment_1_1.entity.ball.Whole;
 import org.assignment_1_1.entity.thread.BallThread;
@@ -37,8 +38,8 @@ public class BounceFrame extends JFrame {
         startButton(buttonPanel);
         stopButton(buttonPanel);
         redBallButton(buttonPanel);
-        experimentLotsBallsButton(buttonPanel);
-//        joinBallButton(buttonPanel);
+//        experimentLotsBallsButton(buttonPanel);
+        joinBallButton(buttonPanel);
 
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
@@ -58,12 +59,17 @@ public class BounceFrame extends JFrame {
 
             void runBall() throws InterruptedException {
                 GreyBall b = new GreyBall(canvas);
-                BallThread thread = new BallThread(b);
+                MovableBall lastBall = storage.getLastBall();
+                BallThread thread;
+                if (lastBall != null) {
+                    BallThread lastThread = storage.getThreadByBall(lastBall);
+                    thread = new BallThread(b, lastThread);
+                } else {
+                    thread = new BallThread(b);
+                }
                 thread.setPriority(1);
-                storage.add(b, thread);
-                thread.join();
-
                 thread.start();
+                storage.add(b, thread);
 
                 System.out.println("Thread name = " +
                         thread.getName());
