@@ -2,7 +2,7 @@ package org.assignment_1_3;
 
 public class CounterDemo {
 
-    private static final int N_ITER = 10; // 100000;
+    private static final int N_ITER = 100000; // 100000;
 
     public static void main(String[] args) throws InterruptedException {
         Counter1 counter = new Counter1();

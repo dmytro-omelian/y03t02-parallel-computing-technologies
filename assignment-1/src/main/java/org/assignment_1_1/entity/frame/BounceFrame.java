@@ -36,8 +36,8 @@ public class BounceFrame extends JFrame {
         startButton(buttonPanel);
         stopButton(buttonPanel);
         redBallButton(buttonPanel);
-//        experimentLotsBallsButton(buttonPanel);
-        joinBallButton(buttonPanel);
+        experimentLotsBallsButton(buttonPanel);
+//        joinBallButton(buttonPanel);
 
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
