@@ -20,14 +20,6 @@ public class Sync {
         return this.stop;
     }
 
-    public synchronized void changePermission() {
-        permission = !permission;
-        num++;
-        if (num % 100 == 0) System.out.println();
-
-        if (num == 100000) stop = true;
-    }
-
     public synchronized void waitAndChange(boolean controlValue, char symbol) {
         while (getPermission() != controlValue) {
             try {
