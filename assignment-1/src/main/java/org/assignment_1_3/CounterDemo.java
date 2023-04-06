@@ -4,21 +4,26 @@ public class CounterDemo {
 
     private static final int N_ITER = 10; // 100000;
 
-    public static void main(String[] args) {
-        Counter counter = new Counter();
+    public static void main(String[] args) throws InterruptedException {
+        Counter1 counter = new Counter1();
+//        Counter2 counter = new Counter2();
+
         Thread thread1 = new Thread(() -> {
             for (int i = 0; i < N_ITER; i ++) {
                 counter.increment();
-                System.out.println(counter.getCounter());
             }
         });
         Thread thread2 = new Thread(() -> {
             for (int i = 0; i < N_ITER; i ++) {
                 counter.decrement();
-                System.out.println(counter.getCounter());
             }
         });
         thread1.start();
         thread2.start();
+
+        thread1.join();
+        thread2.join();
+
+        System.out.println("Final count: " + counter.getCount());
     }
 }
