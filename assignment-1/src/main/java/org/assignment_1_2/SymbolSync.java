@@ -15,8 +15,8 @@ public class SymbolSync implements Runnable {
     @Override
     public void run() {
         while (true) {
-            permission.waitAndChange(control, symbol);
-            if (permission.isStop()) return;
+            this.permission.waitAndChange(control, symbol);
+            if (this.permission.isStop()) return;
         }
     }
 

@@ -29,12 +29,16 @@ public class Sync {
             }
         }
         System.out.print(symbol);
-        permission = !permission;
-        num++;
-        if (num % 100 == 0) System.out.println();
-
-        if (num == 100000) stop = true;
+        step();
         notifyAll();
+    }
+
+    public void step() {
+        this.permission = !this.permission;
+        this.num++;
+        if (this.num % 100 == 0) System.out.println();
+
+        if (this.num == 100000) this.stop = true;
     }
 
 }
