@@ -2,20 +2,24 @@ package org.assignment_1_3;
 
 public class CounterDemo {
 
-    private static final int N_ITER = 100000; // 100000;
+    private static final int N_ITER = 10; // 100000;
 
     public static void main(String[] args) throws InterruptedException {
-        Counter1 counter = new Counter1();
-//        Counter2 counter = new Counter2();
+        SyncCounter counter = new SyncCounter();
+//        AsyncCounter counter = new AsyncCounter();
+//        LockCounter counter = new LockCounter();
+//        SyncBlockCounter counter = new SyncBlockCounter();
 
         Thread thread1 = new Thread(() -> {
-            for (int i = 0; i < N_ITER; i ++) {
+            for (int i = 0; i < N_ITER; i++) {
                 counter.increment();
+                counter.print();
             }
         });
         Thread thread2 = new Thread(() -> {
-            for (int i = 0; i < N_ITER; i ++) {
+            for (int i = 0; i < N_ITER; i++) {
                 counter.decrement();
+                counter.print();
             }
         });
         thread1.start();
@@ -24,6 +28,6 @@ public class CounterDemo {
         thread1.join();
         thread2.join();
 
-        System.out.println("Final count: " + counter.getCount());
+        counter.print();
     }
 }
