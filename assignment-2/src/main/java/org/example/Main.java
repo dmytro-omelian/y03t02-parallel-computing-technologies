@@ -1,60 +1,38 @@
 package org.example;
 
+import org.example.exception.IllegalDimensionsException;
 import org.example.services.MatrixService;
 import org.example.strategies.CalculationStrategy;
-import org.example.strategies.DiffOperation;
+import org.example.strategies.FoxMultiplyOperation;
 import org.example.strategies.MultiplyOperation;
-import org.example.strategies.SumOperation;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IllegalDimensionsException {
         int n = 100;
 
         MatrixService matrixService = new MatrixService();
 
-        double[][] B = matrixService.generate(1, n);
-        double[][] D = matrixService.generate(1, n);
-
-        double[][] b = matrixService.generate(1, 1);
+        double[][] B = matrixService.generate(2, n);
 
         double[][] MC = matrixService.generate(n, n);
-        double[][] MD = matrixService.generate(n, n);
-        double[][] MX = matrixService.generate(n, n);
 
-        double[][] minValue = matrixService.min(MC);
+        double[][] foxResult = FoxMultiplyOperation.calculate(B, MC, 4);
+        print("result: ", foxResult);
+
 
         CalculationStrategy multiplication = new MultiplyOperation();
-        CalculationStrategy sum = new SumOperation();
-        CalculationStrategy difference = new DiffOperation();
 
         long start = System.currentTimeMillis();
 
-        double[][] E = matrixService.processMatrices(
-                matrixService.processMatrices(B, MC, multiplication),
-                matrixService.multiplyByNumber(D, minValue),
-                sum
-        );
-        double[][] MA = matrixService.processMatrices(
-                matrixService.processMatrices(
-                        matrixService.multiplyByNumber(MD, b),
-                        matrixService.processMatrices(MC, MX, difference),
-                        multiplication
-                ),
-                matrixService.multiplyByNumber(
-                        matrixService.processMatrices(MX, MC, multiplication),
-                        b
-                ),
-                sum
-        );
+        double[][] E = matrixService.processMatrices(B, MC, multiplication);
 
         long end = System.currentTimeMillis();
 
         print("E=", E);
-        print("MA=", MA);
         System.out.println("Time: " + (end - start) + " ms");
     }
 

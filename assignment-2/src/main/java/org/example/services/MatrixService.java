@@ -2,7 +2,9 @@ package org.example.services;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.example.exception.IllegalDimensionsException;
 import org.example.strategies.CalculationStrategy;
+import org.example.strategies.MultiplyOperation;
 import org.example.tasks.MatrixTask;
 
 import java.util.Random;
@@ -22,7 +24,14 @@ public class MatrixService {
     public MatrixService() {
     }
 
-    public double[][] processMatrices(double[][] A, double[][] B, CalculationStrategy strategy) {
+    public double[][] processMatrices(double[][] A, double[][] B, CalculationStrategy strategy) throws IllegalDimensionsException {
+
+        if (strategy instanceof MultiplyOperation && A[0].length != B.length) {
+            logger.error(String.format("Dimensions error. A: %dx%d, B: %dx%d",
+                    A.length, A[0].length, B.length, B[0].length));
+            throw new IllegalDimensionsException("Can't multiply matrices, please check dimensions.");
+        }
+
         int n = A.length;
         int m = B[0].length;
 
@@ -45,32 +54,6 @@ public class MatrixService {
             e.printStackTrace();
         }
 
-        logger.info(strategy.getDescription() + " was processed successfully.");
-        return result;
-    }
-
-
-    public double[][] multiplyByNumber(double[][] A, double[][] B) {
-        double number = B[0][0];
-        int n = A.length;
-        int m = A[0].length;
-        double[][] result = new double[n][m];
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < m; ++j) {
-                result[i][j] = A[i][j] * number;
-            }
-        }
-        logger.info("Matrix multiplication with a number was processed successfully.");
-        return result;
-    }
-
-    public double[][] min(double[][] A) {
-        int n = A.length;
-        double[][] result = new double[1][1];
-        for (double[] doubles : A) {
-            IntStream.range(0, n).forEach(j -> result[0][0] = Math.min(result[0][0], doubles[j]));
-        }
-        logger.info("Finding min value in Matrix was processed successfully.");
         return result;
     }
 
