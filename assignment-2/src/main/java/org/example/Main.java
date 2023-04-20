@@ -18,19 +18,21 @@ public class Main {
 
         double[][] MC = matrixService.generate(n, n);
 
+        long start = System.currentTimeMillis();
         double[][] foxResult = matrixService.multiplyMatrixFox(B, MC, 25).getResult();
+        long end = System.currentTimeMillis();
+
         print("result: ", foxResult);
+        System.out.printf("Time: %d ms\n", (end - start));
 
         CalculationStrategy multiplication = new MultiplyOperation();
 
-        long start = System.currentTimeMillis();
-
+        start = System.currentTimeMillis();
         double[][] E = matrixService.processMatrices(B, MC, multiplication);
-
-        long end = System.currentTimeMillis();
+        end = System.currentTimeMillis();
 
         print("E=", E);
-        System.out.println("Time: " + (end - start) + " ms");
+        System.out.printf("Time: %d ms\n", (end - start));
     }
 
     private static void print(String message, double[][] result) {
