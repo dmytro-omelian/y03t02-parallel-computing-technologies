@@ -1,16 +1,17 @@
-package org.example.strategies;
+package org.example.tasks;
 
-public class MatrixFoxThread extends Thread {
+public class MatrixFoxTask extends Thread {
     double[][][][] result;
     double[][] matrix1;
     double[][] matrix2;
     int row;
     int col;
     int blockSize;
-    public MatrixFoxThread(double[][][][] result, double[][] m1, double[][] m2, int row, int col, int blockSize) {
-        this.result=result;
-        matrix1=m1;
-        matrix2=m2;
+
+    public MatrixFoxTask(double[][][][] result, double[][] m1, double[][] m2, int row, int col, int blockSize) {
+        this.result = result;
+        matrix1 = m1;
+        matrix2 = m2;
         this.row = row;
         this.col = col;
         this.blockSize = blockSize;
@@ -37,8 +38,9 @@ public class MatrixFoxThread extends Thread {
         }
         return result;
     }
+
     public double[][] addMatrices(double[][] matrix1, double[][] matrix2) {
-        int numBlocks  = matrix1.length; // number of blocks in each row/column
+        int numBlocks = matrix1.length; // number of blocks in each row/column
         double[][] result = new double[numBlocks][numBlocks];
 
         for (int i = 0; i < numBlocks; i++) {
