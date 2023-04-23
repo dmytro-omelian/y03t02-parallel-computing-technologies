@@ -1,6 +1,8 @@
 package org.example.tasks;
 
-public class MatrixFoxTask extends Thread {
+import java.util.concurrent.Callable;
+
+public class MatrixFoxTask implements Callable<Void> {
     double[][][][] result;
     double[][] matrix1;
     double[][] matrix2;
@@ -17,11 +19,11 @@ public class MatrixFoxTask extends Thread {
         this.blockSize = blockSize;
     }
 
-    @Override
-    public void run() {
-        double[][] subResult = multiplyMatrices(matrix1, matrix2);
-        result[row][col] = addMatrices(result[row][col], subResult); // [ [0,0] [0,0] ] => [ [0,1] [0,0] ]; => [ [0,0] [0,1] ]
-    }
+//    @Override
+//    public void run() {
+//        double[][] subResult = multiplyMatrices(matrix1, matrix2);
+//        result[row][col] = addMatrices(result[row][col], subResult); // [ [0,0] [0,0] ] => [ [0,1] [0,0] ]; => [ [0,0] [0,1] ]
+//    }
 
     public double[][] multiplyMatrices(double[][] firstMatrix, double[][] secondMatrix) {
         int rowsInFirst = firstMatrix.length;
@@ -50,5 +52,12 @@ public class MatrixFoxTask extends Thread {
         }
 
         return result;
+    }
+
+    @Override
+    public Void call() {
+        double[][] subResult = multiplyMatrices(matrix1, matrix2);
+        result[row][col] = addMatrices(result[row][col], subResult); // [ [0,0] [0,0] ] => [ [0,1] [0,0] ]; => [ [0,0] [0,1] ]
+        return null;
     }
 }

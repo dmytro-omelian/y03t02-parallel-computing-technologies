@@ -8,9 +8,8 @@ import java.util.Arrays;
 
 public class Main {
 
-
     public static void main(String[] args) throws Exception {
-        int n = 100;
+        int n = 1000;
 
         MatrixService matrixService = new MatrixService();
 
@@ -22,8 +21,8 @@ public class Main {
         double[][] foxResult = matrixService.multiplyMatrixFox(B, MC, 25).getResult();
         long end = System.currentTimeMillis();
 
-        print("result: ", foxResult);
-        System.out.printf("Time: %d ms\n", (end - start));
+//        print("result: ", foxResult);
+        System.out.printf("Fox Time: %d ms\n", (end - start));
 
         CalculationStrategy multiplication = new MultiplyOperation();
 
@@ -31,7 +30,7 @@ public class Main {
         double[][] E = matrixService.processMatrices(B, MC, multiplication);
         end = System.currentTimeMillis();
 
-        print("E=", E);
+//        print("E=", E);
         System.out.printf("Time: %d ms\n", (end - start));
     }
 

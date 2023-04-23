@@ -12,10 +12,7 @@ import org.example.tasks.MatrixTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -42,7 +39,7 @@ public class MatrixService {
 
         MatrixTask.ConcurrencyContext context = new MatrixTask.ConcurrencyContext(result.length);
         Lock lock = new ReentrantLock();
-        int nThreads = 5;
+        int nThreads = 15;
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 
         for (int i = 0; i < nThreads; ++i) {
@@ -88,7 +85,8 @@ public class MatrixService {
         double[][][][] blocks1 = splitMatrixIntoBlocks(matrix1, blockSize);
         double[][][][] blocks2 = splitMatrixIntoBlocks(matrix2, blockSize);
         double[][][][] cBlocks = splitMatrixIntoBlocks(result, blockSize);
-        List<MatrixFoxTask> threads = new ArrayList<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        List<MatrixFoxTask> tasks = new ArrayList<>();
 
         for (int i = 0; i < numBlocks; i++) {
             for (int j = 0; j < numBlocks; j++) {
@@ -98,15 +96,18 @@ public class MatrixService {
                     final int mod = (i + k) % numBlocks;
                     MatrixFoxTask thread = new MatrixFoxTask(cBlocks, blocks1[i][mod], blocks2[mod][j], row, col, blockSize);
 
-                    threads.add(thread);
-                    thread.run();
+                    tasks.add(thread);
                 }
             }
         }
 
-        for (MatrixFoxTask thread : threads) {
-            thread.join();
+        List<Future<Void>> futures = executorService.invokeAll(tasks);
+
+        for (Future<Void> future : futures) {
+            future.get();
         }
+
+        executorService.shutdown();
 
         convertTo2DArray(cBlocks, result);
 
