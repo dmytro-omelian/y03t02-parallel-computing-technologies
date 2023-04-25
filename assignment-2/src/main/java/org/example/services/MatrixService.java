@@ -39,7 +39,7 @@ public class MatrixService {
 
         MatrixTask.ConcurrencyContext context = new MatrixTask.ConcurrencyContext(result.length);
         Lock lock = new ReentrantLock();
-        int nThreads = 15;
+        int nThreads = 1;
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 
         for (int i = 0; i < nThreads; ++i) {
@@ -85,7 +85,7 @@ public class MatrixService {
         double[][][][] blocks1 = splitMatrixIntoBlocks(matrix1, blockSize);
         double[][][][] blocks2 = splitMatrixIntoBlocks(matrix2, blockSize);
         double[][][][] cBlocks = splitMatrixIntoBlocks(result, blockSize);
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(25);
         List<MatrixFoxTask> tasks = new ArrayList<>();
 
         for (int i = 0; i < numBlocks; i++) {

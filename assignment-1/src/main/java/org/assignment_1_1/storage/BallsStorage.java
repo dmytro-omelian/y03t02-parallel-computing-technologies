@@ -42,7 +42,7 @@ public class BallsStorage {
         if (thread == null) {
             throw new RuntimeException("Thread is null...");
         }
-        thread.interrupt();
+        thread.interrupt(); // how to move to terminated?
         this.balls.remove(greyBall);
     }
 
