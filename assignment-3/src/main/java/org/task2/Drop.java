@@ -3,14 +3,14 @@ package org.task2;
 public class Drop {
     // Message sent from producer
     // to consumer.
-    private String message;
+    private Integer value;
     // True if consumer should wait
     // for producer to send message,
     // false if producer should wait for
     // consumer to retrieve message.
     private boolean empty = true;
 
-    public synchronized String take() {
+    public synchronized Integer take() {
         // Wait until message is
         // available.
         while (empty) {
@@ -24,10 +24,10 @@ public class Drop {
         // Notify producer that
         // status has changed.
         notifyAll();
-        return message;
+        return value;
     }
 
-    public synchronized void put(String message) {
+    public synchronized void put(int value) {
         // Wait until message has
         // been retrieved.
         while (!empty) {
@@ -38,8 +38,8 @@ public class Drop {
         }
         // Toggle status.
         empty = false;
-        // Store message.
-        this.message = message;
+        // Store value
+        this.value = value;
         // Notify consumer that status
         // has changed.
         notifyAll();

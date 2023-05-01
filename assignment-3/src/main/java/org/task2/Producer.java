@@ -10,12 +10,7 @@ public class Producer implements Runnable {
     }
 
     public void run() {
-        String[] importantInfo = {
-                "Mares eat oats",
-                "Does eat oats",
-                "Little lambs eat ivy",
-                "A kid will eat ivy too"
-        };
+        int[] importantInfo = createValues(1000);
         Random random = new Random();
 
         for (int i = 0; i < importantInfo.length; i++) {
@@ -25,6 +20,14 @@ public class Producer implements Runnable {
             } catch (InterruptedException e) {
             }
         }
-        drop.put("DONE");
+        drop.put(-1);
+    }
+
+    private int[] createValues(int len) {
+        int[] result = new int[len];
+        for (int i = 0; i < len; ++ i) {
+            result[i] = i;
+        }
+        return result;
     }
 }
