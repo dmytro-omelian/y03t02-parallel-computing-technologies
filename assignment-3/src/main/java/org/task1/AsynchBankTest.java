@@ -1,4 +1,4 @@
-package org.example;
+package org.task1;
 
 public class AsynchBankTest {
     public static final int NACCOUNTS = 10;

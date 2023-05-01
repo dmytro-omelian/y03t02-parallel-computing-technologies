@@ -1,4 +1,4 @@
-package org.example;
+package org.task1;
 
 class TransferThread extends Thread {
     private static final int REPS = 1000;
@@ -18,7 +18,7 @@ class TransferThread extends Thread {
             for (int i = 0; i < REPS; i++) {
                 int toAccount = (int) (bank.size() * Math.random());
                 int amount = (int) (maxAmount * Math.random() / REPS);
-                bank.transfer(fromAccount, toAccount, amount);
+                bank.transferSync(fromAccount, toAccount, amount);
             }
         }
     }
