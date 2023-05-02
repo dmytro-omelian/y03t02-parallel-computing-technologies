@@ -1,4 +1,4 @@
-package org.task3;
+package org.task3.entity;
 
 import java.util.List;
 
@@ -12,5 +12,9 @@ public class ClassRegister {
 
     public List<Group> getGroups() {
         return groups;
+    }
+
+    public void mark(String groupId, String studentId, Double score) {
+
     }
 }
