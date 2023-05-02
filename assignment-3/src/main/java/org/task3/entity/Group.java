@@ -4,19 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
-    private String id;
-    private List<Student> students;
+    private final String groupName;
+    private final List<Student> students;
 
-    public Group(String id) {
-        this.id = id;
+    public Group(String groupName) {
+        this.groupName = groupName;
         this.students = new ArrayList<>();
     }
 
-    public void addStudent(Student student) {
-        this.students.add(student);
+    public String getGroupName() {
+        return groupName;
     }
 
-    public String getId() {
-        return this.id;
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    public void updateGrade(Student student, int grade) {
+        for (Student s : students) {
+            if (s.equals(student)) {
+                s.addGrade(grade);
+                return;
+            }
+        }
+        student.addGrade(grade);
+        students.add(student);
     }
 }
+

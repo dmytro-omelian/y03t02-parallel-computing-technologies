@@ -1,7 +1,5 @@
 package org.task3.repository;
 
-import org.task3.entity.Mark;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
