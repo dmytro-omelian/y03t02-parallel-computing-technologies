@@ -1,4 +1,4 @@
-package org.task3;
+package org.task3.entity;
 
 import java.util.ArrayList;
 import java.util.List;
