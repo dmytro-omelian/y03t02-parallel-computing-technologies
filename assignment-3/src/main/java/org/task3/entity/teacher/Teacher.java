@@ -33,7 +33,7 @@ public abstract class Teacher extends Thread {
                 grades[i] = grade;
             }
             classRegister.grade(grades, currentWeek - 1);
-            System.out.println(name + " "  + surname + " has graded week " + currentWeek);
+            System.out.println(name + " " + surname + " has graded week " + currentWeek);
             currentWeek++;
             try {
                 Thread.sleep(2);

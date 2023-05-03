@@ -19,7 +19,7 @@ public class ClassRegister {
 
     public void grade(double[] studentGrades, int weekIndex) {
         int n = group.getNumberOfStudents();
-        for (int i = 0; i < n; ++ i) {
+        for (int i = 0; i < n; ++i) {
             synchronized (grades[i]) {
                 grades[i][weekIndex] = studentGrades[i];
             }
@@ -31,9 +31,9 @@ public class ClassRegister {
 
         try {
             int nStudents = group.getNumberOfStudents();
-            for (int i = 0; i < nStudents; ++ i) {
+            for (int i = 0; i < nStudents; ++i) {
                 System.out.print("Student [" + i + "] has grades: ");
-                for (int j = 0; j < WEEKS; ++ j) {
+                for (int j = 0; j < WEEKS; ++j) {
                     System.out.printf("w-%d|%f ", j, grades[i][j]);
                 }
                 System.out.println();
