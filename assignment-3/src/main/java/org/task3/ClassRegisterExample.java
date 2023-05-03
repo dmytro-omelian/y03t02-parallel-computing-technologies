@@ -3,47 +3,46 @@ package org.task3;
 import org.task3.entity.ClassRegister;
 import org.task3.entity.Group;
 import org.task3.entity.Student;
+import org.task3.entity.teacher.Assistant;
+import org.task3.entity.teacher.Lecturer;
+import org.task3.entity.teacher.Teacher;
+
+import java.util.ArrayList;
 
 public class ClassRegisterExample {
 
+    public static final Integer WEEKS = 12;
+    private static final Integer STUDENTS = 20;
+
     public static void main(String[] args) {
-        // create a journal to keep track of grades
-        ClassRegister journal = new ClassRegister();
 
-        // create three courses, one for each group of students
-        Group group1 = new Group("Group 1");
-        Group group2 = new Group("Group 2");
-        Group group3 = new Group("Group 3");
-
-        // add some students to each course
-//        group1.addStudent(new Student("John", "Doe"));
-//        group1.addStudent(new Student("Jane", "Doe"));
-//
-//        group2.addStudent(new Student("Bob", "Smith"));
-//        group2.addStudent(new Student("Alice", "Johnson"));
-//
-//        group3.addStudent(new Student("Tom", "Jones"));
-//        group3.addStudent(new Student("Samantha", "Lee"));
-
-        // add the courses to the journal
-        journal.addCourse(group1);
-        journal.addCourse(group2);
-        journal.addCourse(group3);
-
-        // simulate grading for a week
-        for (int i = 1; i <= 7; i++) {
-            // iterate over each course
-            for (Group group : journal.getCourses()) {
-                // iterate over each student in the group
-                for (Student student : group.getStudents()) {
-                    // generate a random grade for the student and update it in the group
-                    int grade = (int) (Math.random() * 100);
-                    group.updateGrade(student, grade);
-                }
-            }
+        var students = new ArrayList<Student>();
+        for (int j = 0; j < STUDENTS; j++) {
+            var student = new Student("Student", String.valueOf(j), j);
+            students.add(student);
         }
 
-        // display the grades for each student
-        journal.display();
+        Group group = new Group("Group 0", students);
+        ClassRegister classRegister = new ClassRegister(group, WEEKS);
+        Teacher lecturer1 = new Lecturer("Lecturer", "0", classRegister);
+        Teacher assistant1 = new Assistant("Assistant", "1", classRegister);
+        Teacher assistant2 = new Assistant("Assistant", "2", classRegister);
+        Teacher assistant3 = new Assistant("Assistant", "3", classRegister);
+
+        lecturer1.start();
+        assistant1.start();
+        assistant2.start();
+        assistant3.start();
+
+        try {
+            lecturer1.join();
+            assistant1.join();
+            assistant2.join();
+            assistant3.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        classRegister.printGrades();
     }
 }
