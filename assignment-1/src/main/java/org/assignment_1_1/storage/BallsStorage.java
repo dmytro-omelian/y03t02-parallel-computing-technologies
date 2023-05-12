@@ -37,12 +37,7 @@ public class BallsStorage {
         this.wholes.add(b);
     }
 
-    public void remove(Ball greyBall) {
-        Thread thread = this.balls.getOrDefault(greyBall, null);
-        if (thread == null) {
-            throw new RuntimeException("Thread is null...");
-        }
-        thread.interrupt(); // how to move to terminated?
+    public synchronized void remove(Ball greyBall) {
         this.balls.remove(greyBall);
     }
 

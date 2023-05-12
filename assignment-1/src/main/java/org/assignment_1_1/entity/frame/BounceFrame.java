@@ -65,7 +65,7 @@ public class BounceFrame extends JFrame {
                 } else {
                     thread = new BallThread(b);
                 }
-                thread.setPriority(1);
+                thread.setPriority(Thread.MIN_PRIORITY);
                 thread.start();
                 storage.add(b, thread);
 
@@ -92,7 +92,7 @@ public class BounceFrame extends JFrame {
             void runBall(int x, int y) {
                 Ball r = new Ball(canvas, x, y, Color.DARK_GRAY);
                 BallThread thread = new BallThread(r);
-                thread.setPriority(1);
+                thread.setPriority(Thread.MIN_PRIORITY);
                 storage.add(r, thread);
                 thread.start();
 
@@ -115,7 +115,7 @@ public class BounceFrame extends JFrame {
             void runBall() {
                 Ball r = new Ball(canvas, Color.RED);
                 BallThread thread = new BallThread(r);
-                thread.setPriority(10);
+                thread.setPriority(Thread.MAX_PRIORITY);
                 thread.start();
                 storage.add(r, thread);
 
@@ -139,7 +139,7 @@ public class BounceFrame extends JFrame {
             void runBall() {
                 Ball b = new Ball(canvas, Color.DARK_GRAY);
                 BallThread thread = new BallThread(b);
-                thread.setPriority(1);
+                thread.setPriority(Thread.MIN_PRIORITY);
                 thread.start();
                 storage.add(b, thread);
 

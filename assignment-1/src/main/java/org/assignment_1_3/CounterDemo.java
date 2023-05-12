@@ -5,9 +5,9 @@ public class CounterDemo {
     private static final int N_ITER = 10; // 100000;
 
     public static void main(String[] args) throws InterruptedException {
-        SyncCounter counter = new SyncCounter();
+//        SyncCounter counter = new SyncCounter();
 //        AsyncCounter counter = new AsyncCounter();
-//        LockCounter counter = new LockCounter();
+        LockCounter counter = new LockCounter();
 //        SyncBlockCounter counter = new SyncBlockCounter();
 
         Thread thread1 = new Thread(() -> {
