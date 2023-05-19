@@ -10,20 +10,22 @@ public class SyncCounter implements Counter {
 
     @Override
     public synchronized void increment() {
-        synchronized (this) {
-            this.counter++;
-        }
+        counter++;
+//        synchronized (this) {
+//            this.counter++;
+//        }
     }
 
     @Override
     public synchronized void decrement() {
-        synchronized (this) {
-            this.counter--;
-        }
+        counter--;
+//        synchronized (this) {
+//            this.counter--;
+//        }
     }
 
-    @Override
-    public synchronized void print() {
-        System.out.printf("Counter is %s\n", this.counter);
+    public int getCounter() {
+        return this.counter;
     }
+
 }

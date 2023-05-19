@@ -19,8 +19,7 @@ public class AsyncCounter implements Counter {
         this.counter--;
     }
 
-    @Override
-    public void print() {
-        System.out.printf("Counter is %s\n", counter);
+    public int getCounter() {
+        return counter;
     }
 }

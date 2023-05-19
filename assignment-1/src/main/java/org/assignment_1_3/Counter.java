@@ -4,6 +4,4 @@ public interface Counter {
     void increment();
 
     void decrement();
-
-    void print();
 }

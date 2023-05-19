@@ -31,9 +31,4 @@ public class LockCounter implements Counter {
             lock.unlock();
         }
     }
-
-    @Override
-    public synchronized void print() {
-        System.out.printf("Counter is %s\n", counter);
-    }
 }

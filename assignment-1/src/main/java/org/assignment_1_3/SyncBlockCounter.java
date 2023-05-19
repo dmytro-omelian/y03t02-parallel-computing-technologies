@@ -21,9 +21,4 @@ public class SyncBlockCounter implements Counter {
             this.counter--;
         }
     }
-
-    @Override
-    public void print() {
-        System.out.printf("Counter is %s\n", counter);
-    }
 }
