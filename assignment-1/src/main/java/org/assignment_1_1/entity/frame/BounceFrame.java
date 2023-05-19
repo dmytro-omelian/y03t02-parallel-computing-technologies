@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BounceFrame extends JFrame {
@@ -36,8 +38,8 @@ public class BounceFrame extends JFrame {
         startButton(buttonPanel);
         stopButton(buttonPanel);
         redBallButton(buttonPanel);
-        experimentLotsBallsButton(buttonPanel);
-//        joinBallButton(buttonPanel);
+//        experimentLotsBallsButton(buttonPanel);
+        joinBallButton(buttonPanel);
 
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
@@ -84,20 +86,27 @@ public class BounceFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int x = 0;
                 int y = new Random().nextInt(canvas.getWidth());
-                for (int i = 0; i < 1000; ++i) {
-                    runBall(x, y);
+
+                List<BallThread> ballThreads = new ArrayList<>();
+                Ball r = new Ball(canvas, x, y, Color.RED);
+                BallThread ballThread = new BallThread(r);
+                ballThread.setPriority(Thread.MAX_PRIORITY);
+                storage.add(r, ballThread);
+                ballThreads.add(ballThread);
+                for (int i = 0; i < 1000; i ++) {
+                    Ball g = new Ball(canvas, x, y, Color.DARK_GRAY);
+                    ballThread = new BallThread(g);
+                    ballThread.setPriority(Thread.MIN_PRIORITY);
+                    storage.add(g, ballThread);
+                    ballThreads.add(ballThread);
                 }
-            }
 
-            void runBall(int x, int y) {
-                Ball r = new Ball(canvas, x, y, Color.DARK_GRAY);
-                BallThread thread = new BallThread(r);
-                thread.setPriority(Thread.MIN_PRIORITY);
-                storage.add(r, thread);
-                thread.start();
+                for (BallThread bt : ballThreads) {
+                    bt.start();
 
-                System.out.println("Thread name = " +
-                        thread.getName());
+                    System.out.println("Thread name = " +
+                            bt.getName());
+                }
             }
         });
         buttonPanel.add(buttonRed);
