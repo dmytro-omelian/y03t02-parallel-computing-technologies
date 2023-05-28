@@ -2,11 +2,11 @@ package org.assignment_1_3;
 
 public class CounterDemo {
 
-    private static final int N_ITER = 10000; // 100000;
+    private static final int N_ITER = 10000;
 
     public static void main(String[] args) throws InterruptedException {
-        SyncCounter counter = new SyncCounter();
-//        AsyncCounter counter = new AsyncCounter();
+//        SyncCounter counter = new SyncCounter();
+        AsyncCounter counter = new AsyncCounter();
 //        LockCounter counter = new LockCounter();
 //        SyncBlockCounter counter = new SyncBlockCounter();
 
