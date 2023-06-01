@@ -50,8 +50,7 @@ class Bank {
 
     public void test() {
         int sum = 0;
-        for (int i = 0; i < accounts.length; i++)
-            sum += accounts[i];
+        for (int account : accounts) sum += account;
         System.out.println("Transactions:" + ntransacts + " Sum: " + sum);
     }
 
