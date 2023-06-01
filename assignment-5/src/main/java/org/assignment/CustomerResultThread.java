@@ -15,7 +15,7 @@ public class CustomerResultThread extends Thread {
         while(true) {
             try {
                 Thread.sleep(1000);
-                result = system.getCustomerResult();
+                result = system.getResult();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
