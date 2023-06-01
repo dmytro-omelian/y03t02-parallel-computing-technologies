@@ -1,4 +1,4 @@
-package org.assignment.task2;
+package org.assignment.task_2;
 
 /**
  * Завдання:

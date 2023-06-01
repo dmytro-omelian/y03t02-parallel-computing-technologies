@@ -1,6 +1,7 @@
-package org.assignment.task3;
+package org.assignment.task_3_4;
 
 import java.io.File;
+import java.util.Scanner;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +9,10 @@ import java.util.concurrent.TimeUnit;
  * Завдання:
  * <p>
  * 3. Розробіть та реалізуйте алгоритм пошуку спільних слів в текстових документах
+ * з використанням ForkJoinFramework.
+
+ * 4. Розробіть та реалізуйте алгоритм пошуку текстових документів, які відповідають
+ * заданим ключовим словам (належать до області «Інформаційні технології»),
  * з використанням ForkJoinFramework.
  */
 
@@ -36,6 +41,14 @@ public class Main {
 
         System.out.println("Total unique tokens: " + sharedStorage.getNumberOfUniqueWords());
 
-        System.out.println(sharedStorage.getDirsFor("filewithoneuniqueword"));
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please input keywords: ");
+        String line = scanner.nextLine();
+        String[] keywords = line.split(" ");
+        for (String keyword: keywords) {
+            System.out.print(keyword + " : ");
+            System.out.println(sharedStorage.getDirsFor(keyword));
+        }
     }
 }

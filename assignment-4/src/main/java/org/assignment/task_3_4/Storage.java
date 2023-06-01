@@ -1,4 +1,4 @@
-package org.assignment.task3;
+package org.assignment.task_3_4;
 
 import java.util.*;
 

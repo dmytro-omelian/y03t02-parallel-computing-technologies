@@ -1,4 +1,4 @@
-package org.assignment.task1;
+package org.assignment.task_1;
 
 import java.util.concurrent.RecursiveTask;
 
