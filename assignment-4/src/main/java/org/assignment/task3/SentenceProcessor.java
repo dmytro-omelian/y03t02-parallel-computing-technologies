@@ -1,55 +1,54 @@
 package org.assignment.task3;
 
 import java.util.concurrent.ForkJoinTask;
-import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.RecursiveAction;
 
-public class SentenceProcessor extends RecursiveTask<Storage> {
+public class SentenceProcessor extends RecursiveAction {
 
+    private final Storage sharedStorage;
     private final String filePath;
     private final String[] sentences;
     private final int start;
     private final int end;
 
-    public SentenceProcessor(String filePath, String[] sentences, int start, int end) {
+    public SentenceProcessor(String filePath, String[] sentences, int start, int end, Storage sharedStorage) {
         this.filePath = filePath;
         this.sentences = sentences;
         this.start = start;
         this.end = end;
+        this.sharedStorage = sharedStorage;
     }
 
     @Override
-    protected Storage compute() {
+    protected void compute() {
         if (end - start <= 30) {
-            return processSentences(sentences, start, end);
+            processSentences(sentences, start, end);
+            return;
         }
 
         int mid = (start + end) / 2;
-        SentenceProcessor leftTask = new SentenceProcessor(filePath, sentences, start, mid);
-        SentenceProcessor rightTask = new SentenceProcessor(filePath, sentences, mid, end);
+        SentenceProcessor leftTask = new SentenceProcessor(filePath, sentences, start, mid, sharedStorage);
+        SentenceProcessor rightTask = new SentenceProcessor(filePath, sentences, mid, end, sharedStorage);
 
         ForkJoinTask.invokeAll(leftTask, rightTask);
 
-        Storage leftStorage = leftTask.join();
-        Storage rightStorage = rightTask.join();
-
-        return leftStorage.merge(rightStorage);
+        leftTask.join();
+        rightTask.join();
     }
 
-    private Storage processSentence(String sentence) {
+    private void processSentence(String sentence) {
         Storage result = new Storage();
-        String[] words = sentence.split(" ");
+        String regex = "([^a-zA-Z']+)'*\\1*";
+        String[] words = sentence.split(regex);
         for (String word: words) {
             result.add(word, filePath);
         }
-        return result;
+        sharedStorage.merge(result);
     }
 
-    private Storage processSentences(String[] sentences, int start, int end) {
-        Storage storage = new Storage();
+    private void processSentences(String[] sentences, int start, int end) {
         for (int i = start; i < end; ++ i) {
-            Storage temp = processSentence(sentences[i]);
-            storage.merge(temp);
+            processSentence(sentences[i]);
         }
-        return storage;
     }
 }

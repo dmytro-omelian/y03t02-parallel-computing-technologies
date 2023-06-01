@@ -14,7 +14,7 @@ public class Storage {
         return words.getOrDefault(word, new HashSet<>());
     }
 
-    public Storage merge(Storage temp) {
+    public synchronized Storage merge(Storage temp) {
         for (Map.Entry<String, Set<String>> entry : temp.getWords().entrySet()) {
             String word = entry.getKey();
             Set<String> values = entry.getValue();
@@ -23,12 +23,15 @@ public class Storage {
         return this;
     }
 
-    public void add(String word, String value) {
+    public synchronized void add(String word, String value) {
         words.computeIfAbsent(word, k -> new HashSet<>()).add(value);
     }
 
     private void addAll(String word, Set<String> values) {
+        int wasTokens = words.size();
         words.computeIfAbsent(word, k -> new HashSet<>()).addAll(values);
+        int isTokens = words.size();
+//        System.out.println("There were added " + (isTokens - wasTokens) + " new tokens");
     }
 
     public Map<String, Set<String>> getWords() {
@@ -40,5 +43,9 @@ public class Storage {
             System.out.println(entry.getKey());
             System.out.println(Arrays.toString(entry.getValue().toArray()));
         }
+    }
+
+    public int getNumberOfUniqueWords() {
+        return words.size();
     }
 }
