@@ -1,33 +1,29 @@
 package org.task3;
 
-import org.task3.entity.ClassRegister;
-import org.task3.entity.Group;
-import org.task3.entity.Student;
-import org.task3.entity.teacher.Assistant;
-import org.task3.entity.teacher.Lecturer;
-import org.task3.entity.teacher.Teacher;
+import org.task3.classregister.ClassRegister;
+import org.task3.group.Group;
+import org.task3.teacher.Assistant;
+import org.task3.teacher.Lecturer;
+import org.task3.teacher.Teacher;
 
-import java.util.ArrayList;
 
 public class ClassRegisterExample {
 
     public static final Integer WEEKS = 12;
     private static final Integer STUDENTS = 20;
+    private static final Integer N_GROUPS = 3;
 
     public static void main(String[] args) {
 
-        var students = new ArrayList<Student>();
-        for (int j = 0; j < STUDENTS; j++) {
-            var student = new Student("Student", String.valueOf(j), j);
-            students.add(student);
+        Group[] groups = new Group[N_GROUPS];
+        for (int i = 0; i < N_GROUPS; i++) {
+            groups[i] = new Group("Group-" + i, STUDENTS);
         }
-
-        Group group = new Group("Group 0", students);
-        ClassRegister classRegister = new ClassRegister(group, WEEKS);
-        Teacher lecturer1 = new Lecturer("Lecturer", "0", classRegister);
-        Teacher assistant1 = new Assistant("Assistant", "1", classRegister);
-        Teacher assistant2 = new Assistant("Assistant", "2", classRegister);
-        Teacher assistant3 = new Assistant("Assistant", "3", classRegister);
+        ClassRegister classRegister = new ClassRegister(groups, WEEKS);
+        Teacher lecturer1 = new Lecturer("Lecturer 1", classRegister, groups, WEEKS);
+        Teacher assistant1 = new Assistant("Assistant 1 ", classRegister, groups, WEEKS);
+        Teacher assistant2 = new Assistant("Assistant 2", classRegister, groups, WEEKS);
+        Teacher assistant3 = new Assistant("Assistant 3", classRegister, groups, WEEKS);
 
         lecturer1.start();
         assistant1.start();
@@ -43,6 +39,6 @@ public class ClassRegisterExample {
             e.printStackTrace();
         }
 
-        classRegister.printGrades();
+        classRegister.print();
     }
 }
