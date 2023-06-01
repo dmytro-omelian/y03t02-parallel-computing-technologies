@@ -16,12 +16,10 @@ public class CustomerService implements Callable<Customer> {
     public Customer call() {
         try {
             Customer removedCustomer = queue.take();
-
             Thread.sleep(removedCustomer.serviceTime());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
         return customer;
     }
 }

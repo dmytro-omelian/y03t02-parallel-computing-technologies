@@ -29,27 +29,33 @@ public class Main {
             }
         }
     }
-    public static CustomerResult getAverageResult(List<CustomerResultThread> results){
+
+    public static CustomerResult getAverageResult(List<CustomerResultThread> results) {
         int totalCustomers = 0;
         int totalFailedCustomers = 0;
         int totalServedCustomers = 0;
-        int averageServiceTime = 0;
+        int totalServiceTime = 0;
         ConcurrentHashMap<Integer, Integer> totalQueueLength = new ConcurrentHashMap<>();
+
         for (CustomerResultThread resultThread : results) {
             CustomerResult result = resultThread.getCustomerResult();
             totalCustomers += result.getTotal();
             totalFailedCustomers += result.getFailed();
             totalServedCustomers += result.getServed();
-            averageServiceTime += result.getAverageTime();
+            totalServiceTime += result.getAverageTime();
+
             for (Integer queueLength : result.getTotalQueueLength().keySet()) {
-                totalQueueLength.put(queueLength, totalQueueLength.getOrDefault(queueLength, 0) + result.getTotalQueueLength().get(queueLength));
+                totalQueueLength.merge(queueLength, result.getTotalQueueLength().get(queueLength), Integer::sum);
             }
         }
+
         totalCustomers /= SYSTEMS;
         totalFailedCustomers /= SYSTEMS;
         totalServedCustomers /= SYSTEMS;
-        averageServiceTime /= SYSTEMS;
-        totalQueueLength.replaceAll((l, v) -> totalQueueLength.get(l) / SYSTEMS);
-        return new CustomerResult(totalCustomers, totalFailedCustomers, totalServedCustomers, averageServiceTime, totalQueueLength);
+        totalServiceTime /= SYSTEMS;
+
+        totalQueueLength.replaceAll((l, v) -> v / SYSTEMS);
+
+        return new CustomerResult(totalCustomers, totalFailedCustomers, totalServedCustomers, totalServiceTime, totalQueueLength);
     }
 }

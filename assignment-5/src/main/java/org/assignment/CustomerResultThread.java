@@ -18,6 +18,7 @@ public class CustomerResultThread extends Thread {
                 result = system.getResult();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                break;
             }
         }
     }

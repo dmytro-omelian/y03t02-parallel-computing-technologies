@@ -4,33 +4,27 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiChannelSystem extends Thread {
-    public static int idCounter = 0;
-    private int id;
-    private static final int SERVICE_CHANNELS = 8;
-    private static final int QUEUE_SIZE = 10;
-    private static final int SERVICE_TIME_MIN = 500;
-    private static final int SERVICE_TIME_MAX = 1500;
-    private static final int ARRIVAL_TIME_MIN = 50;
-    private static final int ARRIVAL_TIME_MAX = 150;
     private final AtomicInteger totalFailedCustomers = new AtomicInteger(0);
     private final AtomicInteger totalServedCustomers = new AtomicInteger(0);
     private final AtomicInteger totalServiceTime = new AtomicInteger(0);
-    private final ConcurrentHashMap<Integer, Integer> totalQueueLength = new ConcurrentHashMap<>();
-    BlockingQueue<Customer> queue = new ArrayBlockingQueue<>(QUEUE_SIZE);
-    public MultiChannelSystem(){
-        this.id = ++idCounter;
+
+    private final ConcurrentHashMap<Integer, Integer> totalQueueLength;
+    private final BlockingQueue<Customer> queue;
+
+    public MultiChannelSystem() {
+        this.totalQueueLength = new ConcurrentHashMap<>();
+        this.queue = new ArrayBlockingQueue<>(Config.QUEUE_SIZE);
     }
+
     @Override
     public void run() {
-
-        ExecutorService executorService = Executors.newFixedThreadPool(SERVICE_CHANNELS);
+        ExecutorService executorService = Executors.newFixedThreadPool(Config.N_CHANNELS);
         try {
-
             int i = 0;
-            while (true){
-                Customer customer = new Customer(i + 1, getRandomNumberInRange(SERVICE_TIME_MIN, SERVICE_TIME_MAX));
+            while (true) {
+                Customer customer = new Customer(i + 1, getRandomNumberInRange(Config.MIN_TIME_SERVICE, Config.MAX_TIME_SERVICE));
 
-                if (queue.size() == QUEUE_SIZE) {
+                if (queue.size() == Config.QUEUE_SIZE) {
                     totalFailedCustomers.incrementAndGet();
                 } else {
                     queue.put(customer);
@@ -39,23 +33,26 @@ public class MultiChannelSystem extends Thread {
                     totalServiceTime.addAndGet(customer.serviceTime());
                 }
 
-                Thread.sleep(getRandomNumberInRange(ARRIVAL_TIME_MIN, ARRIVAL_TIME_MAX));
+                Thread.sleep(getRandomNumberInRange(Config.MIN_TIME_ARRIVE, Config.MAX_TIME_ARRIVE));
+                i++;
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        } finally {
+            executorService.shutdown();
         }
-
     }
+
     private int getRandomNumberInRange(int min, int max) {
-        return (int) (Math.random() * ((max - min) + 1)) + min;
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     public CustomerResult getResult() {
         totalQueueLength.put(queue.size(), totalQueueLength.getOrDefault(queue.size(), 0) + 1);
-        return new CustomerResult(totalServedCustomers.get() + totalFailedCustomers.get(), totalFailedCustomers.get(), totalServedCustomers.get(), totalServiceTime.get() / totalServedCustomers.get(), totalQueueLength);
-    }
-
-    public int getSystemId() {
-        return id;
+        int totalCustomers = totalServedCustomers.get() + totalFailedCustomers.get();
+        int failedCustomers = totalFailedCustomers.get();
+        int servedCustomers = totalServedCustomers.get();
+        int averageServiceTime = totalServedCustomers.get() != 0 ? totalServiceTime.get() / totalServedCustomers.get() : 0;
+        return new CustomerResult(totalCustomers, failedCustomers, servedCustomers, averageServiceTime, totalQueueLength);
     }
 }

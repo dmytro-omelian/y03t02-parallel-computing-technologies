@@ -1,15 +1,14 @@
 package org.assignment;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomerResult {
 
-    private int total;
-    private int failed;
-    private int served;
-    private int averageTime;
-    private double failureRate;
+    private final int total;
+    private final int failed;
+    private final int served;
+    private final int averageTime;
+    private final double failureRate;
 
     private ConcurrentHashMap<Integer, Integer> totalQueueLength;
 
@@ -46,27 +45,22 @@ public class CustomerResult {
         return averageTime;
     }
 
-    public double getFailureRate() {
-        return failureRate;
-    }
-
     @Override
     public String toString() {
         int sum = 0;
         int count = 0;
-        for (Map.Entry<Integer, Integer> entry  : totalQueueLength.entrySet()) {
+        for (var entry : totalQueueLength.entrySet()) {
             sum += entry.getKey() * entry.getValue();
             count += entry.getValue();
         }
-        String result = """
+        return """
                 Customers: %d
-                Failed Customers: %d
-                Served Customers: %d
-                Average Service Time: %d
-                Average Queue Length: %f
-                Failure Probability: %.2f%%
+                Failed: %d
+                Served: %d
+                Average service time: %d
+                Average queue length: %f
+                Failure probability: %.1f%%
                 """.formatted(total, failed, served, averageTime, (double) sum/count, failureRate*100);
-        return result;
     }
 
     public ConcurrentHashMap<Integer, Integer> getTotalQueueLength() {
