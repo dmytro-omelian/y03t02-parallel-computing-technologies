@@ -26,7 +26,7 @@ public abstract class Teacher extends Thread {
         for (int i = 0; i < weeks; ++i) {
             for (Group group : groups) {
                 for (Student student : group.getStudents()) {
-                    double grade = random.nextDouble() * 100;
+                    double grade = random.nextInt(100) + 1.0 * random.nextInt(10) / 10;
                     classRegister.grade(student, i, grade);
                 }
             }
