@@ -1,18 +1,18 @@
 package org.assignment.task1;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
 /**
-
- Завдання:
-
- 1. Побудуйте алгоритм статистичного аналізу тексту та визначте характеристики випадкової величини
- «довжина слова в символах» з використанням ForkJoinFramework.
- Дослідіть побудований алгоритм аналізу текстових документів на ефективність експериментально.
-
+ * Завдання:
+ * <p>
+ * 1. Побудуйте алгоритм статистичного аналізу тексту та визначте характеристики випадкової величини
+ * «довжина слова в символах» з використанням ForkJoinFramework.
+ * Дослідіть побудований алгоритм аналізу текстових документів на ефективність експериментально.
  */
 
 public class Main {

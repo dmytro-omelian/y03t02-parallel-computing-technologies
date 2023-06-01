@@ -40,14 +40,14 @@ public class SentenceProcessor extends RecursiveAction {
         Storage result = new Storage();
         String regex = "([^a-zA-Z']+)'*\\1*";
         String[] words = sentence.split(regex);
-        for (String word: words) {
+        for (String word : words) {
             result.add(word, filePath);
         }
         sharedStorage.merge(result);
     }
 
     private void processSentences(String[] sentences, int start, int end) {
-        for (int i = start; i < end; ++ i) {
+        for (int i = start; i < end; ++i) {
             processSentence(sentences[i]);
         }
     }

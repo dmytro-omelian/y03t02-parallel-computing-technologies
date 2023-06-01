@@ -31,9 +31,9 @@ public class BruteForceSolution {
 
     private static int findLongestWord(List<String> sentences) {
         int result = 0;
-        for (String sentence: sentences) {
+        for (String sentence : sentences) {
             String[] words = sentence.split(" ");
-            for (String word: words) {
+            for (String word : words) {
                 result = Math.max(result, word.length());
             }
         }

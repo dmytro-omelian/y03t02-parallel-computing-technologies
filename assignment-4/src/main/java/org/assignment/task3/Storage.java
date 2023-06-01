@@ -39,7 +39,7 @@ public class Storage {
     }
 
     public void print() {
-        for (var entry: words.entrySet()) {
+        for (var entry : words.entrySet()) {
             System.out.println(entry.getKey());
             System.out.println(Arrays.toString(entry.getValue().toArray()));
         }

@@ -33,8 +33,8 @@ public class SentenceProcessor extends RecursiveTask<Integer> {
 
     private int processSentences(String[] sentences, int start, int end) {
         int result = 0;
-        for (int i = start; i < end; ++ i) {
-            int temp  = processSentence(sentences[i]);
+        for (int i = start; i < end; ++i) {
+            int temp = processSentence(sentences[i]);
             result = Math.max(result, temp);
         }
         return result;
