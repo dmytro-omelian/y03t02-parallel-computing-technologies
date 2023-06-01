@@ -12,7 +12,7 @@ public class CustomerResultThread extends Thread {
 
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 Thread.sleep(1000);
                 result = system.getResult();

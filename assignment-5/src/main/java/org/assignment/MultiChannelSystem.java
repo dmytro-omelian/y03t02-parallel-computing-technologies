@@ -4,9 +4,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiChannelSystem extends Thread {
-    private final AtomicInteger totalFailedCustomers = new AtomicInteger(0);
-    private final AtomicInteger totalServedCustomers = new AtomicInteger(0);
-    private final AtomicInteger totalServiceTime = new AtomicInteger(0);
+    private final AtomicInteger failed = new AtomicInteger(0);
+    private final AtomicInteger served = new AtomicInteger(0);
+    private final AtomicInteger totalTime = new AtomicInteger(0);
 
     private final ConcurrentHashMap<Integer, Integer> totalQueueLength;
     private final BlockingQueue<Customer> queue;
@@ -25,12 +25,12 @@ public class MultiChannelSystem extends Thread {
                 Customer customer = new Customer(i + 1, getRandomNumberInRange(Config.MIN_TIME_SERVICE, Config.MAX_TIME_SERVICE));
 
                 if (queue.size() == Config.QUEUE_SIZE) {
-                    totalFailedCustomers.incrementAndGet();
+                    failed.incrementAndGet();
                 } else {
                     queue.put(customer);
                     executorService.submit(new CustomerService(queue, customer));
-                    totalServedCustomers.incrementAndGet();
-                    totalServiceTime.addAndGet(customer.serviceTime());
+                    served.incrementAndGet();
+                    totalTime.addAndGet(customer.serviceTime());
                 }
 
                 Thread.sleep(getRandomNumberInRange(Config.MIN_TIME_ARRIVE, Config.MAX_TIME_ARRIVE));
@@ -49,10 +49,10 @@ public class MultiChannelSystem extends Thread {
 
     public CustomerResult getResult() {
         totalQueueLength.put(queue.size(), totalQueueLength.getOrDefault(queue.size(), 0) + 1);
-        int totalCustomers = totalServedCustomers.get() + totalFailedCustomers.get();
-        int failedCustomers = totalFailedCustomers.get();
-        int servedCustomers = totalServedCustomers.get();
-        int averageServiceTime = totalServedCustomers.get() != 0 ? totalServiceTime.get() / totalServedCustomers.get() : 0;
+        int totalCustomers = served.get() + failed.get();
+        int failedCustomers = failed.get();
+        int servedCustomers = served.get();
+        int averageServiceTime = served.get() != 0 ? totalTime.get() / served.get() : 0;
         return new CustomerResult(totalCustomers, failedCustomers, servedCustomers, averageServiceTime, totalQueueLength);
     }
 }

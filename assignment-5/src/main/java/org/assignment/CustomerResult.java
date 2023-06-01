@@ -60,7 +60,7 @@ public class CustomerResult {
                 Average service time: %d
                 Average queue length: %f
                 Failure probability: %.1f%%
-                """.formatted(total, failed, served, averageTime, (double) sum/count, failureRate*100);
+                """.formatted(total, failed, served, averageTime, (double) sum / count, failureRate * 100);
     }
 
     public ConcurrentHashMap<Integer, Integer> getTotalQueueLength() {
