@@ -8,12 +8,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/matrix")
@@ -51,23 +53,24 @@ public class MatrixController {
         }
     }
 
-    @PostMapping("/multiply-client")
+    @PostMapping(value = "/multiply-client", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> multiplyFromFiles(
-            @RequestParam MultipartFile matrixA,
-            @RequestParam MultipartFile matrixB) {
+            @RequestParam("matrixA") MultipartFile matrixA,
+            @RequestParam("matrixB") MultipartFile matrixB) {
         try {
             double[][] result = matrixService.multiply(matrixA, matrixB);
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new MatrixMultiplicationResponse(result));
         } catch (FileNotFoundException e) {
-            logger.error("file was not found, see: " + e);
+            logger.error("File was not found, see: " + e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File was not found.");
         } catch (IOException e) {
-            logger.error("error occurred, see: " + e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong while reading files.");
+            logger.error("An error occurred, see: " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong while reading formData.");
         }
     }
+
 
     @PostMapping("/create")
     public ResponseEntity<?> createMatrix(
