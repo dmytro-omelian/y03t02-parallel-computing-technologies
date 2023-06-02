@@ -1,6 +1,7 @@
 package com.assignment.assignment8.controller;
 
 import com.assignment.assignment8.entity.MatrixMultiplicationResponse;
+import com.assignment.assignment8.service.FileReaderService;
 import com.assignment.assignment8.service.FileWriterService;
 import com.assignment.assignment8.service.MatrixService;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @RestController
@@ -21,18 +23,32 @@ public class MatrixController {
 
     private final MatrixService matrixService;
     private final FileWriterService writerService;
+    private final FileReaderService readerService;
 
     @Autowired
-    public MatrixController(MatrixService matrixService, FileWriterService writerService) {
+    public MatrixController(MatrixService matrixService, FileWriterService writerService, FileReaderService readerService) {
         this.matrixService = matrixService;
         this.writerService = writerService;
+        this.readerService = readerService;
     }
 
-    @PostMapping("/multiply-server")
-    public ResponseEntity<MatrixMultiplicationResponse> multiplyOnServer(
+    @GetMapping("/multiply-server")
+    public ResponseEntity<?> multiplyOnServer(
             @RequestParam String matrixAFilename,
             @RequestParam String matrixBFilename) {
-        return null;
+
+        try {
+            double[][] matrixA = readerService.getValues(matrixAFilename);
+            double[][] matrixB = readerService.getValues(matrixBFilename);
+
+            double[][] result = matrixService.multiply(matrixA, matrixB);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new MatrixMultiplicationResponse(result));
+        } catch (FileNotFoundException e) {
+            logger.error("file was not found, see: " + e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File was not found.");
+        }
     }
 
     @PostMapping("/multiply-client")

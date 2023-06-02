@@ -23,4 +23,8 @@ public class MatrixService {
         return result;
     }
 
+    public double[][] multiply(double[][] matrixA, double[][] matrixB) {
+        return null;
+    }
+
 }
