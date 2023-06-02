@@ -52,10 +52,21 @@ public class MatrixController {
     }
 
     @PostMapping("/multiply-client")
-    public ResponseEntity<MatrixMultiplicationResponse> multiplyFromFiles(
+    public ResponseEntity<?> multiplyFromFiles(
             @RequestParam MultipartFile matrixA,
             @RequestParam MultipartFile matrixB) {
-        return null;
+        try {
+            double[][] result = matrixService.multiply(matrixA, matrixB);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new MatrixMultiplicationResponse(result));
+        } catch (FileNotFoundException e) {
+            logger.error("file was not found, see: " + e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File was not found.");
+        } catch (IOException e) {
+            logger.error("error occurred, see: " + e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went wrong while reading files.");
+        }
     }
 
     @PostMapping("/create")
