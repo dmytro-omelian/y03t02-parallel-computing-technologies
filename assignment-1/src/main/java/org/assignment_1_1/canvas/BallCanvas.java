@@ -26,7 +26,6 @@ public class BallCanvas extends JPanel {
             } else {
                 w.increaseCounter();
                 this.storage.remove(b);
-
             }
         }
         for (Whole w : this.storage.getWholes()) {
