@@ -61,17 +61,14 @@
         <input type="text" id="matrixBFilename" class="input-text">
     </div>
 
-    <form id="file-upload-form" class="border border-dark mt-3 p-3" enctype="multipart/form-data">
+    <form id="file-upload-form" enctype="multipart/form-data">
         <h2 class="text-center">Files on client</h2>
         <div class="form-group">
-            <label for="a-file">A</label>
             <input type="file" class="form-control-file" id="matrixA" name="a" accept=".txt">
         </div>
         <div class="form-group">
-            <label for="b-file">B</label>
             <input type="file" class="form-control-file" id="matrixB" name="b" accept=".txt">
         </div>
-        <button id="multiply-client-files" type="submit" class="btn btn-dark" onclick="multiplyFromClient()"">Multiply files from client</button>
     </form>
 
     <div class="form-group">
