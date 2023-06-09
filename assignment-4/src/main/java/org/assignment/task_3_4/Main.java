@@ -50,5 +50,10 @@ public class Main {
             System.out.print(keyword + " : ");
             System.out.println(sharedStorage.getDirsFor(keyword));
         }
+
+        String name1 = "src/main/java/org/assignment/data/school.txt";
+        String name2 = "src/main/java/org/assignment/data/university.txt";
+
+        System.out.println(sharedStorage.getCommonWords(name1, name2));
     }
 }

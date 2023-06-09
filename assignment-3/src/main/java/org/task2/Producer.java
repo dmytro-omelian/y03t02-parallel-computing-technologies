@@ -10,7 +10,7 @@ public class Producer implements Runnable {
     }
 
     public void run() {
-        int[] importantInfo = createValues(1000);
+        int[] importantInfo = createValues(100);
         Random random = new Random();
 
         for (int i = 0; i < importantInfo.length; i++) {

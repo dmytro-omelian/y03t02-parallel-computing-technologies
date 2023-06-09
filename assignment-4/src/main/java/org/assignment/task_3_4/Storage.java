@@ -1,21 +1,22 @@
 package org.assignment.task_3_4;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Storage {
 
-    private final Map<String, Set<String>> words;
+    private final ConcurrentHashMap<String, Set<String>> words;
 
     public Storage() {
-        this.words = new HashMap<>();
+        this.words = new ConcurrentHashMap<>();
     }
 
     public Set<String> getDirsFor(String word) {
         return words.getOrDefault(word, new HashSet<>());
     }
 
-    public synchronized Storage merge(Storage temp) {
-        for (Map.Entry<String, Set<String>> entry : temp.getWords().entrySet()) {
+    public Storage merge(Storage temp) {
+        for (ConcurrentHashMap.Entry<String, Set<String>> entry : temp.getWords().entrySet()) {
             String word = entry.getKey();
             Set<String> values = entry.getValue();
             addAll(word, values);
@@ -23,7 +24,7 @@ public class Storage {
         return this;
     }
 
-    public synchronized void add(String word, String value) {
+    public void add(String word, String value) {
         words.computeIfAbsent(word, k -> new HashSet<>()).add(value);
     }
 
@@ -34,7 +35,7 @@ public class Storage {
 //        System.out.println("There were added " + (isTokens - wasTokens) + " new tokens");
     }
 
-    public Map<String, Set<String>> getWords() {
+    public ConcurrentHashMap<String, Set<String>> getWords() {
         return words;
     }
 
@@ -47,5 +48,15 @@ public class Storage {
 
     public int getNumberOfUniqueWords() {
         return words.size();
+    }
+
+    public List<String> getCommonWords(String name1, String name2) {
+        List<String> commons = new ArrayList<>();
+        for (var entry: words.entrySet()) {
+            if (entry.getValue().contains(name1) && entry.getValue().contains(name2)) {
+                commons.add(entry.getKey());
+            }
+        }
+        return commons;
     }
 }
