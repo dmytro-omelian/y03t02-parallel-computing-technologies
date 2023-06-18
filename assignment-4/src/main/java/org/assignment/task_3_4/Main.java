@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit;
  * з використанням ForkJoinFramework.
  */
 
+// efficitur Curabitur
+
 public class Main {
     public static void main(String[] args) {
         final File folder = new File("src/main/java/org/assignment/data/");
