@@ -5,19 +5,6 @@ import java.util.Scanner;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Завдання:
- * <p>
- * 3. Розробіть та реалізуйте алгоритм пошуку спільних слів в текстових документах
- * з використанням ForkJoinFramework.
-
- * 4. Розробіть та реалізуйте алгоритм пошуку текстових документів, які відповідають
- * заданим ключовим словам (належать до області «Інформаційні технології»),
- * з використанням ForkJoinFramework.
- */
-
-// efficitur Curabitur
-
 public class Main {
     public static void main(String[] args) {
         final File folder = new File("src/main/java/org/assignment/data/");

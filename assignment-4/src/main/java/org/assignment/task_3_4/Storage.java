@@ -29,10 +29,7 @@ public class Storage {
     }
 
     private void addAll(String word, Set<String> values) {
-        int wasTokens = words.size();
         words.computeIfAbsent(word, k -> new HashSet<>()).addAll(values);
-        int isTokens = words.size();
-//        System.out.println("There were added " + (isTokens - wasTokens) + " new tokens");
     }
 
     public ConcurrentHashMap<String, Set<String>> getWords() {

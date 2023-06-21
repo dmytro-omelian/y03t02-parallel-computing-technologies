@@ -51,7 +51,7 @@ class Bank {
     public void test() {
         int sum = 0;
         for (int account : accounts) sum += account;
-        System.out.println("Transactions:" + ntransacts + " Sum: " + sum);
+//        System.out.println("Transactions:" + ntransacts + " Sum: " + sum);
     }
 
     public int size() {

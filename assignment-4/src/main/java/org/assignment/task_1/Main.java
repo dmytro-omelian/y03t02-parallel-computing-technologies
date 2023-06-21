@@ -7,16 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
-/**
- * Завдання:
- * <p>
- * 1. Побудуйте алгоритм статистичного аналізу тексту та визначте характеристики випадкової величини
- * «довжина слова в символах» з використанням ForkJoinFramework.
- * Дослідіть побудований алгоритм аналізу текстових документів на ефективність експериментально.
- */
-
-// efficitur Curabitur
-
 public class Main {
     public static void main(String[] args) {
         String filePath = "src/main/java/org/assignment/data/text.txt";

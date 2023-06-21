@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 
-public class AsynchBankTest {
-    public static final int REPS = 100_000;
-    public static final int NACCOUNTS = 10;
+public class SynchBankTest {
+    public static final int REPS = 2_000_000;
+    public static final int NACCOUNTS = 100;
     public static final int INITIAL_BALANCE = 10000;
 
     public static void main(String[] args) {
