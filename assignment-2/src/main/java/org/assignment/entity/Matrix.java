@@ -1,7 +1,5 @@
 package org.assignment.entity;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Random;
 
 public class Matrix {
@@ -27,16 +25,6 @@ public class Matrix {
 
     public int getNumCols() {
         return numCols;
-    }
-
-    public Matrix transpose() {
-        Matrix transposed = new Matrix(numCols, numRows);
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                transposed.data[j][i] = data[i][j];
-            }
-        }
-        return transposed;
     }
 
     public void generateRandomMatrix(double minVal, double maxVal) {

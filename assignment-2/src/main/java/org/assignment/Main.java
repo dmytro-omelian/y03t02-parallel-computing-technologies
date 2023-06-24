@@ -1,7 +1,7 @@
 package org.assignment;
 
 import org.assignment.entity.Matrix;
-import org.assignment.fox.FoxMatrixMultiplicator;
+import org.assignment.fox.FoxMatrixService;
 
 public class Main {
 
@@ -14,7 +14,7 @@ public class Main {
         final int[] testMatrixSizesData = {500, 750, 1000, 1250, 1500, 2000};
         testMatrixSizes(testMatrixSizesData, defaultFoxBlocks);
 
-        final int[] testThreadNumsData = {2, 4, 6, 8, 9, 12, 15, 16, 25};
+        final int[] testThreadNumsData = {2, 4, 6, 8, 9, 12};
         testThreadsNums(defaultMatrixSize, testThreadNumsData);
     }
 
@@ -23,13 +23,11 @@ public class Main {
         final Matrix matrixB = new Matrix(matrixSize);
         matrixA.generateRandomMatrix(1, 100);
         matrixB.generateRandomMatrix(1, 100);
-        matrixA.saveToCSV("matrix_a");
-        matrixB.saveToCSV("matrix_b");
 
-        FoxMatrixMultiplicator foxMatrixMultiplicator = new FoxMatrixMultiplicator(foxBlocks);
+        FoxMatrixService foxMatrixService = new FoxMatrixService(foxBlocks);
 
         Matrix resultNaive = matrixA.multiply(matrixB);
-        Matrix resultFox = foxMatrixMultiplicator.multiply(matrixA, matrixB);
+        Matrix resultFox = foxMatrixService.multiply(matrixA, matrixB);
         System.out.println("Parallel algorithm is correct: " + resultNaive.equals(resultFox));
     }
 
@@ -43,23 +41,23 @@ public class Main {
             matrixA.generateRandomMatrix(1, 100);
             matrixB.generateRandomMatrix(1, 100);
 
-            long start = System.nanoTime();
+            long start = System.currentTimeMillis();
             matrixA.multiply(matrixB);
-            long finish = System.nanoTime();
+            long finish = System.currentTimeMillis();
             naiveMetrics[i] = finish - start;
 
-            FoxMatrixMultiplicator foxMatrixMultiplicator = new FoxMatrixMultiplicator(foxBlocksNum);
-            start = System.nanoTime();
-            foxMatrixMultiplicator.multiply(matrixA, matrixB);
-            finish = System.nanoTime();
+            FoxMatrixService foxMatrixService = new FoxMatrixService(foxBlocksNum);
+            start = System.currentTimeMillis();
+            foxMatrixService.multiply(matrixA, matrixB);
+            finish = System.currentTimeMillis();
             foxMetrics[i] = finish - start;
         }
 
         System.out.println("SUBTASK 3: SIZE TESTING (Threads num is " + foxBlocksNum * foxBlocksNum + ")");
         for (int i = 0; i < sizes.length; i++) {
             System.out.println("-------- Size: " + sizes[i] + " --------");
-            System.out.println("Naive: " + naiveMetrics[i] + " ns");
-            System.out.println("Fox: " + foxMetrics[i] + " ns, Speedup: " + naiveMetrics[i] * 1.0 / foxMetrics[i]);
+            System.out.println("Naive: " + naiveMetrics[i] + " ms");
+            System.out.println("Fox: " + foxMetrics[i] + " ms, Speedup: " + naiveMetrics[i] * 1.0 / foxMetrics[i]);
         }
     }
 
@@ -73,17 +71,17 @@ public class Main {
         matrixB.generateRandomMatrix(1, 100);
 
         for (int i = 0; i < threadsNums.length; i++) {
-            long start = System.nanoTime();
+            long start = System.currentTimeMillis();
             matrixA.multiply(matrixB);
-            long finish = System.nanoTime();
+            long finish = System.currentTimeMillis();
             naiveMetrics[i] = finish - start;
 
             int sqrtThreads = (int) Math.sqrt(threadsNums[i]);
             if (Math.pow(sqrtThreads, 2) == threadsNums[i]) {
-                FoxMatrixMultiplicator foxMatrixMultiplicator = new FoxMatrixMultiplicator(sqrtThreads);
-                start = System.nanoTime();
-                foxMatrixMultiplicator.multiply(matrixA, matrixB);
-                finish = System.nanoTime();
+                FoxMatrixService foxMatrixService = new FoxMatrixService(sqrtThreads);
+                start = System.currentTimeMillis();
+                foxMatrixService.multiply(matrixA, matrixB);
+                finish = System.currentTimeMillis();
                 foxMetrics[i] = finish - start;
             }
         }
@@ -91,11 +89,11 @@ public class Main {
         System.out.println("SUBTASK 4: THREAD NUM TESTING (Matrix size is " + matrixSize + ")");
         for (int i = 0; i < threadsNums.length; i++) {
             System.out.println("-------- Threads num: " + threadsNums[i] + " --------");
-            System.out.println("Naive: " + naiveMetrics[i] + " ns");
+            System.out.println("Naive: " + naiveMetrics[i] + " ms");
             if (foxMetrics[i] == 0) {
                 System.out.println("Fox: the number of threads is not square");
             } else {
-                System.out.println("Fox: " + foxMetrics[i] + " ns, Speedup: " + naiveMetrics[i] * 1.0 / foxMetrics[i]);
+                System.out.println("Fox: " + foxMetrics[i] + " ms, Speedup: " + naiveMetrics[i] * 1.0 / foxMetrics[i]);
             }
         }
     }

@@ -3,10 +3,10 @@ package org.assignment.fox;
 import org.assignment.entity.Matrix;
 import org.assignment.entity.Result;
 
-public class FoxMatrixMultiplicator {
+public class FoxMatrixService {
     private final int blocksNumSqrt;
 
-    public FoxMatrixMultiplicator(int blocksNum) {
+    public FoxMatrixService(int blocksNum) {
         this.blocksNumSqrt = blocksNum;
     }
 

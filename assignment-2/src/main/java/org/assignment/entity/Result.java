@@ -8,19 +8,15 @@ public class Result extends Matrix {
     public static Result joinFoxBlockSplit(int numRows, int numCols, double[][][][] cBlocks) {
         Result result = new Result(numRows, numCols);
         final int blockSize = cBlocks[0][0].length;
-        int numBlockRows = cBlocks.length;
-        int numBlockCols = cBlocks[0].length;
-
-        for (int i = 0; i < numBlockRows; i++) {
-            for (int j = 0; j < numBlockCols; j++) {
+        for (int i = 0; i < cBlocks.length; i++) {
+            for (int j = 0; j < cBlocks.length; j++) {
                 double[][] subMatrix = cBlocks[i][j];
                 int subMatrixStartRow = i * blockSize;
                 int subMatrixStartCol = j * blockSize;
-                int subMatrixEndRow = Math.min(subMatrixStartRow + blockSize, numRows);
-                int subMatrixEndCol = Math.min(subMatrixStartCol + blockSize, numCols);
-
-                for (int k = subMatrixStartRow; k < subMatrixEndRow; k++) {
-                    System.arraycopy(subMatrix[k - subMatrixStartRow], subMatrixStartCol, result.data[k], subMatrixStartCol, subMatrixEndCol - subMatrixStartCol);
+                for (int k = 0; k < blockSize && k + subMatrixStartRow < numRows; k++) {
+                    for (int l = 0; l < blockSize && l + subMatrixStartCol < numCols; l++) {
+                        result.data[k + subMatrixStartRow][l + subMatrixStartCol] = subMatrix[k][l];
+                    }
                 }
             }
         }
