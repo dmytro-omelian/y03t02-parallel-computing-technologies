@@ -10,7 +10,7 @@ public class CollectiveMatrixMulitplication {
 
     public static boolean RESULT_IS_PRINTED = false;
     public static boolean RANDOMIZE_MATRICES = false;
-    public static boolean VALIDATE_RESULT = false;
+    public static boolean VALIDATE_RESULT = true;
 
     public static void main(String[] args) {
         int taskId, tasksNumber;
