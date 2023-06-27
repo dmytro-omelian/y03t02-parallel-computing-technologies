@@ -1,14 +1,13 @@
-package org.assignment;
+package org.assignment.entity;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CustomerResult {
 
-    private final int total;
-    private final int failed;
-    private final int served;
-    private final int averageTime;
-    private final double failureRate;
+    private int total;
+    private int failed;
+    private int served;
+    private int averageTime;
 
     private ConcurrentHashMap<Integer, Integer> totalQueueLength;
 
@@ -17,7 +16,7 @@ public class CustomerResult {
         this.failed = 0;
         this.served = 0;
         this.averageTime = 0;
-        failureRate = 0;
+        this.totalQueueLength = new ConcurrentHashMap<>();
     }
 
     public CustomerResult(int total, int failed, int served, int averageTime, ConcurrentHashMap<Integer, Integer> totalQueueLength) {
@@ -26,7 +25,6 @@ public class CustomerResult {
         this.served = served;
         this.averageTime = averageTime;
         this.totalQueueLength = totalQueueLength;
-        this.failureRate = (double) failed / total;
     }
 
     public int getTotal() {
@@ -45,8 +43,29 @@ public class CustomerResult {
         return averageTime;
     }
 
+    public void update(CustomerResult result) {
+        this.total += result.getTotal();
+        this.failed += result.getFailed();
+        this.served += result.getServed();
+        this.averageTime += result.getAverageTime();
+
+        for (Integer queueLength : result.getTotalQueueLength().keySet()) {
+            totalQueueLength.merge(queueLength, result.getTotalQueueLength().get(queueLength), Integer::sum);
+        }
+    }
+
+    public void normalize(int systems) {
+        this.total /= systems;
+        this.failed /= systems;
+        this.served /= systems;
+        this.averageTime /= systems;
+
+        totalQueueLength.replaceAll((l, v) -> v / systems);
+    }
+
     @Override
     public String toString() {
+        double failureRate = (double) failed / total;
         int sum = 0;
         int count = 0;
         for (var entry : totalQueueLength.entrySet()) {

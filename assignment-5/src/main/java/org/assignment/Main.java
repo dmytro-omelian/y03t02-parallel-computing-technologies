@@ -1,21 +1,34 @@
 package org.assignment;
 
+import org.assignment.entity.CustomerResult;
+import org.assignment.entity.CustomerResultTask;
+import org.assignment.service.MultiChannelService;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
     private static final int SYSTEMS = 5;
 
     public static void main(String[] args) {
-        List<CustomerResultThread> resultThreads = new ArrayList<>();
+
+        ExecutorService systemService = Executors.newFixedThreadPool(SYSTEMS);
+        List<CustomerResultTask> resultThreads = new ArrayList<>();
         for (int i = 0; i < SYSTEMS; i++) {
-            MultiChannelSystem system = new MultiChannelSystem();
-            system.start();
-            CustomerResultThread resultThread = new CustomerResultThread(system);
-            resultThreads.add(resultThread);
-            resultThread.start();
+            MultiChannelService system = new MultiChannelService();
+            systemService.submit(system);
+            CustomerResultTask resultTask = new CustomerResultTask(system);
+            resultThreads.add(resultTask);
         }
+        systemService.shutdown();
+
+        ExecutorService resultTaskService = Executors.newFixedThreadPool(SYSTEMS);
+        for (CustomerResultTask resultTask: resultThreads) {
+            resultTaskService.submit(resultTask);
+        }
+        resultTaskService.shutdown();
 
         while (true) {
             try {
@@ -30,32 +43,13 @@ public class Main {
         }
     }
 
-    public static CustomerResult getAverageResult(List<CustomerResultThread> results) {
-        int totalCustomers = 0;
-        int totalFailedCustomers = 0;
-        int totalServedCustomers = 0;
-        int totalServiceTime = 0;
-        ConcurrentHashMap<Integer, Integer> totalQueueLength = new ConcurrentHashMap<>();
-
-        for (CustomerResultThread resultThread : results) {
-            CustomerResult result = resultThread.getCustomerResult();
-            totalCustomers += result.getTotal();
-            totalFailedCustomers += result.getFailed();
-            totalServedCustomers += result.getServed();
-            totalServiceTime += result.getAverageTime();
-
-            for (Integer queueLength : result.getTotalQueueLength().keySet()) {
-                totalQueueLength.merge(queueLength, result.getTotalQueueLength().get(queueLength), Integer::sum);
-            }
+    public static CustomerResult getAverageResult(List<CustomerResultTask> results) {
+        CustomerResult result = new CustomerResult();
+        for (CustomerResultTask resultTask : results) {
+            CustomerResult tempResult = resultTask.getCustomerResult();
+            result.update(tempResult);
         }
-
-        totalCustomers /= SYSTEMS;
-        totalFailedCustomers /= SYSTEMS;
-        totalServedCustomers /= SYSTEMS;
-        totalServiceTime /= SYSTEMS;
-
-        totalQueueLength.replaceAll((l, v) -> v / SYSTEMS);
-
-        return new CustomerResult(totalCustomers, totalFailedCustomers, totalServedCustomers, totalServiceTime, totalQueueLength);
+        result.normalize(SYSTEMS);
+        return result;
     }
 }

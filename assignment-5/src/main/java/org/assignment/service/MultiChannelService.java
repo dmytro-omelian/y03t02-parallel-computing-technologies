@@ -1,9 +1,13 @@
-package org.assignment;
+package org.assignment.service;
+
+import org.assignment.config.Config;
+import org.assignment.entity.Customer;
+import org.assignment.entity.CustomerResult;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MultiChannelSystem extends Thread {
+public class MultiChannelService implements Runnable {
     private final AtomicInteger failed = new AtomicInteger(0);
     private final AtomicInteger served = new AtomicInteger(0);
     private final AtomicInteger totalTime = new AtomicInteger(0);
@@ -11,7 +15,7 @@ public class MultiChannelSystem extends Thread {
     private final ConcurrentHashMap<Integer, Integer> totalQueueLength;
     private final BlockingQueue<Customer> queue;
 
-    public MultiChannelSystem() {
+    public MultiChannelService() {
         this.totalQueueLength = new ConcurrentHashMap<>();
         this.queue = new ArrayBlockingQueue<>(Config.QUEUE_SIZE);
     }

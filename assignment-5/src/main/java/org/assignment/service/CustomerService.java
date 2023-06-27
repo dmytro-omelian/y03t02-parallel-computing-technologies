@@ -1,4 +1,6 @@
-package org.assignment;
+package org.assignment.service;
+
+import org.assignment.entity.Customer;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;

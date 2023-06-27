@@ -1,11 +1,13 @@
-package org.assignment;
+package org.assignment.entity;
 
-public class CustomerResultThread extends Thread {
+import org.assignment.service.MultiChannelService;
 
-    private final MultiChannelSystem system;
+public class CustomerResultTask implements Runnable {
+
+    private final MultiChannelService system;
     private CustomerResult result;
 
-    public CustomerResultThread(MultiChannelSystem system) {
+    public CustomerResultTask(MultiChannelService system) {
         this.system = system;
         this.result = new CustomerResult();
     }
