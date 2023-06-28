@@ -2,7 +2,7 @@ package org.assignment.entity;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CustomerResult {
+public class CustomerQueueObserver {
 
     private int total;
     private int failed;
@@ -11,7 +11,7 @@ public class CustomerResult {
 
     private ConcurrentHashMap<Integer, Integer> totalQueueLength;
 
-    public CustomerResult() {
+    public CustomerQueueObserver() {
         this.total = 0;
         this.failed = 0;
         this.served = 0;
@@ -19,7 +19,7 @@ public class CustomerResult {
         this.totalQueueLength = new ConcurrentHashMap<>();
     }
 
-    public CustomerResult(int total, int failed, int served, int averageTime, ConcurrentHashMap<Integer, Integer> totalQueueLength) {
+    public CustomerQueueObserver(int total, int failed, int served, int averageTime, ConcurrentHashMap<Integer, Integer> totalQueueLength) {
         this.total = total;
         this.failed = failed;
         this.served = served;
@@ -43,7 +43,7 @@ public class CustomerResult {
         return averageTime;
     }
 
-    public void update(CustomerResult result) {
+    public void update(CustomerQueueObserver result) {
         this.total += result.getTotal();
         this.failed += result.getFailed();
         this.served += result.getServed();
@@ -65,13 +65,9 @@ public class CustomerResult {
 
     @Override
     public String toString() {
-        double failureRate = (double) failed / total;
-        int sum = 0;
-        int count = 0;
-        for (var entry : totalQueueLength.entrySet()) {
-            sum += entry.getKey() * entry.getValue();
-            count += entry.getValue();
-        }
+        double avrQueueLen = this.getAverageQueueSize();
+        double failureRate = this.getFailureProbability();
+
         return """
                 Customers: %d
                 Failed: %d
@@ -79,10 +75,24 @@ public class CustomerResult {
                 Average service time: %d
                 Average queue length: %f
                 Failure probability: %.1f%%
-                """.formatted(total, failed, served, averageTime, (double) sum / count, failureRate * 100);
+                """.formatted(total, failed, served, averageTime, avrQueueLen, failureRate * 100);
     }
 
     public ConcurrentHashMap<Integer, Integer> getTotalQueueLength() {
         return totalQueueLength;
+    }
+
+    public double getAverageQueueSize() {
+        int sum = 0;
+        int count = 0;
+        for (var entry : totalQueueLength.entrySet()) {
+            sum += entry.getKey() * entry.getValue();
+            count += entry.getValue();
+        }
+        return count != 0 ? (double) sum / count : 0;
+    }
+
+    public double getFailureProbability() {
+        return (double) failed / total;
     }
 }

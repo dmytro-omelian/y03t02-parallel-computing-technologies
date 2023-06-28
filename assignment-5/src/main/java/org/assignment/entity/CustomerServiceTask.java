@@ -1,15 +1,15 @@
-package org.assignment.service;
+package org.assignment.entity;
 
 import org.assignment.entity.Customer;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
-public class CustomerService implements Callable<Customer> {
+public class CustomerServiceTask implements Callable<Customer> {
     private final BlockingQueue<Customer> queue;
     private final Customer customer;
 
-    public CustomerService(BlockingQueue<Customer> queue, Customer customer) {
+    public CustomerServiceTask(BlockingQueue<Customer> queue, Customer customer) {
         this.queue = queue;
         this.customer = customer;
     }

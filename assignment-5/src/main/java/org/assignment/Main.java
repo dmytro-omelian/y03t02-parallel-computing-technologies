@@ -1,6 +1,6 @@
 package org.assignment;
 
-import org.assignment.entity.CustomerResult;
+import org.assignment.entity.CustomerQueueObserver;
 import org.assignment.entity.CustomerResultTask;
 import org.assignment.service.MultiChannelService;
 
@@ -13,19 +13,23 @@ public class Main {
     private static final int SYSTEMS = 5;
 
     public static void main(String[] args) {
+//        serialSimulationSingle();
+        parallelSimulationMultiple();
+    }
 
+    private static void parallelSimulationMultiple() {
         ExecutorService systemService = Executors.newFixedThreadPool(SYSTEMS);
-        List<CustomerResultTask> resultThreads = new ArrayList<>();
+        List<CustomerResultTask> resultTasks = new ArrayList<>();
         for (int i = 0; i < SYSTEMS; i++) {
             MultiChannelService system = new MultiChannelService();
             systemService.submit(system);
             CustomerResultTask resultTask = new CustomerResultTask(system);
-            resultThreads.add(resultTask);
+            resultTasks.add(resultTask);
         }
         systemService.shutdown();
 
         ExecutorService resultTaskService = Executors.newFixedThreadPool(SYSTEMS);
-        for (CustomerResultTask resultTask: resultThreads) {
+        for (CustomerResultTask resultTask: resultTasks) {
             resultTaskService.submit(resultTask);
         }
         resultTaskService.shutdown();
@@ -33,8 +37,8 @@ public class Main {
         while (true) {
             try {
                 Thread.sleep(5000);
-                CustomerResult averageResult = getAverageResult(resultThreads);
-                System.out.println("Average result for " + SYSTEMS + " systems:");
+                CustomerQueueObserver averageResult = getAverageResult(resultTasks);
+                System.out.println("\nAverage result for " + SYSTEMS + " systems:");
                 System.out.println(averageResult);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -43,10 +47,32 @@ public class Main {
         }
     }
 
-    public static CustomerResult getAverageResult(List<CustomerResultTask> results) {
-        CustomerResult result = new CustomerResult();
+    private static void serialSimulationSingle() {
+        MultiChannelService system = new MultiChannelService();
+        system.start();
+
+        CustomerResultTask resultTask = new CustomerResultTask(system);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(resultTask);
+        executorService.shutdown();
+
+        while (true) {
+            try {
+                Thread.sleep(5000);
+                CustomerQueueObserver averageResult = getAverageResult(List.of(resultTask));
+                System.out.println("Average result for 1 system:");
+                System.out.println(averageResult);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
+        }
+    }
+
+    public static CustomerQueueObserver getAverageResult(List<CustomerResultTask> results) {
+        CustomerQueueObserver result = new CustomerQueueObserver();
         for (CustomerResultTask resultTask : results) {
-            CustomerResult tempResult = resultTask.getCustomerResult();
+            CustomerQueueObserver tempResult = resultTask.getCustomerResult();
             result.update(tempResult);
         }
         result.normalize(SYSTEMS);

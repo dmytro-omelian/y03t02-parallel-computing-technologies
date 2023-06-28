@@ -7,4 +7,5 @@ public class Config {
     public static final int MAX_TIME_SERVICE = 1500;
     public static final int MIN_TIME_ARRIVE = 50;
     public static final int MAX_TIME_ARRIVE = 150;
+    public static final int CHECKS_PER_OUTPUT = 5;
 }

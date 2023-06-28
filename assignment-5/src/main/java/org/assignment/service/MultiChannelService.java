@@ -2,12 +2,13 @@ package org.assignment.service;
 
 import org.assignment.config.Config;
 import org.assignment.entity.Customer;
-import org.assignment.entity.CustomerResult;
+import org.assignment.entity.CustomerQueueObserver;
+import org.assignment.entity.CustomerServiceTask;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MultiChannelService implements Runnable {
+public class MultiChannelService extends Thread {
     private final AtomicInteger failed = new AtomicInteger(0);
     private final AtomicInteger served = new AtomicInteger(0);
     private final AtomicInteger totalTime = new AtomicInteger(0);
@@ -32,7 +33,7 @@ public class MultiChannelService implements Runnable {
                     failed.incrementAndGet();
                 } else {
                     queue.put(customer);
-                    executorService.submit(new CustomerService(queue, customer));
+                    executorService.submit(new CustomerServiceTask(queue, customer));
                     served.incrementAndGet();
                     totalTime.addAndGet(customer.serviceTime());
                 }
@@ -51,12 +52,12 @@ public class MultiChannelService implements Runnable {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
-    public CustomerResult getResult() {
+    public CustomerQueueObserver getResult() {
         totalQueueLength.put(queue.size(), totalQueueLength.getOrDefault(queue.size(), 0) + 1);
         int totalCustomers = served.get() + failed.get();
         int failedCustomers = failed.get();
         int servedCustomers = served.get();
         int averageServiceTime = served.get() != 0 ? totalTime.get() / served.get() : 0;
-        return new CustomerResult(totalCustomers, failedCustomers, servedCustomers, averageServiceTime, totalQueueLength);
+        return new CustomerQueueObserver(totalCustomers, failedCustomers, servedCustomers, averageServiceTime, totalQueueLength);
     }
 }
